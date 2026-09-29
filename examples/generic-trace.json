@@ -1,0 +1,164 @@
+{
+  "resourceSpans": [
+    {
+      "resource": {
+        "attributes": [
+          {
+            "key": "service.name",
+            "value": {
+              "stringValue": "generic-synthetic-example"
+            }
+          },
+          {
+            "key": "project.name",
+            "value": {
+              "stringValue": "generic-example"
+            }
+          },
+          {
+            "key": "gen_ai.provider.name",
+            "value": {
+              "stringValue": "generic"
+            }
+          },
+          {
+            "key": "session.id",
+            "value": {
+              "stringValue": "generic-example-session"
+            }
+          },
+          {
+            "key": "tracequota.demo",
+            "value": {
+              "boolValue": true
+            }
+          },
+          {
+            "key": "tracequota.client.id",
+            "value": {
+              "stringValue": "generic_otlp"
+            }
+          },
+          {
+            "key": "tracequota.client.surface",
+            "value": {
+              "stringValue": "cli"
+            }
+          },
+          {
+            "key": "tracequota.runtime.name",
+            "value": {
+              "stringValue": "generic_fixture"
+            }
+          },
+          {
+            "key": "tracequota.integration.type",
+            "value": {
+              "stringValue": "tracequota_adapter"
+            }
+          }
+        ]
+      },
+      "scopeSpans": [
+        {
+          "scope": {
+            "name": "generic.example"
+          },
+          "spans": [
+            {
+              "traceId": "88888888888888888888888888888888",
+              "spanId": "8888888888888888",
+              "name": "example interaction",
+              "startTimeUnixNano": "1790582400000000000",
+              "endTimeUnixNano": "1790582520000000000",
+              "attributes": [
+                {
+                  "key": "tracequota.task.id",
+                  "value": {
+                    "stringValue": "generic-example-2026-09-28"
+                  }
+                },
+                {
+                  "key": "tracequota.task.title",
+                  "value": {
+                    "stringValue": "Generic synthetic OTLP example"
+                  }
+                },
+                {
+                  "key": "tracequota.task.kind",
+                  "value": {
+                    "stringValue": "manual"
+                  }
+                },
+                {
+                  "key": "openinference.span.kind",
+                  "value": {
+                    "stringValue": "CHAIN"
+                  }
+                },
+                {
+                  "key": "tracequota.demo",
+                  "value": {
+                    "boolValue": true
+                  }
+                }
+              ]
+            },
+            {
+              "traceId": "88888888888888888888888888888888",
+              "spanId": "9999999999999999",
+              "parentSpanId": "8888888888888888",
+              "name": "example request",
+              "startTimeUnixNano": "1790582410000000000",
+              "endTimeUnixNano": "1790582420000000000",
+              "attributes": [
+                {
+                  "key": "gen_ai.request.model",
+                  "value": {
+                    "stringValue": "unknown-generic-model"
+                  }
+                },
+                {
+                  "key": "gen_ai.response.id",
+                  "value": {
+                    "stringValue": "generic-example-request-1"
+                  }
+                },
+                {
+                  "key": "gen_ai.usage.input_tokens",
+                  "value": {
+                    "intValue": "1500"
+                  }
+                },
+                {
+                  "key": "gen_ai.usage.output_tokens",
+                  "value": {
+                    "intValue": "250"
+                  }
+                },
+                {
+                  "key": "tracequota.task.id",
+                  "value": {
+                    "stringValue": "generic-example-2026-09-28"
+                  }
+                },
+                {
+                  "key": "tracequota.demo",
+                  "value": {
+                    "boolValue": true
+                  }
+                },
+                {
+                  "key": "openinference.span.kind",
+                  "value": {
+                    "stringValue": "LLM"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

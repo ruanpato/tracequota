@@ -1,0 +1,101 @@
+{
+  "checked_at": "2026-09-29T01:46:34.942851+00:00",
+  "runtime": "native macOS Apple Silicon; localhost-only disposable PostgreSQL instance",
+  "versions": {
+    "api": "0.2.0",
+    "postgres": "17.11 (Homebrew)",
+    "collector": "0.161.0",
+    "phoenix": "13.15.0",
+    "prometheus": "3.5.0",
+    "grafana": "12.3.0"
+  },
+  "services": {
+    "api": {
+      "healthy": true,
+      "http_status": 200
+    },
+    "web": {
+      "healthy": true,
+      "http_status": 200
+    },
+    "collector": {
+      "healthy": true,
+      "http_status": 200
+    },
+    "phoenix": {
+      "healthy": true,
+      "http_status": 200
+    },
+    "prometheus": {
+      "healthy": true,
+      "http_status": 200
+    },
+    "grafana": {
+      "healthy": true,
+      "http_status": 200
+    }
+  },
+  "database_revision": "0004",
+  "counts": {
+    "tasks": 25,
+    "events": 210,
+    "quota_snapshots": 52,
+    "metric_observations": 100,
+    "execution_sessions": 15,
+    "agent_runs": 50
+  },
+  "demo_tasks": 25,
+  "demo_model_calls": 75,
+  "demo_sessions": 15,
+  "catalog": {
+    "bundled_hash": "ece649c7e23a372f93478ec6632560aacff82426ac16f6df274a100d15031e82",
+    "database_hash": "ece649c7e23a372f93478ec6632560aacff82426ac16f6df274a100d15031e82",
+    "in_sync": true,
+    "last_sync": "2026-09-29T01:46:34.074868+00:00",
+    "providers": 3,
+    "models": 10,
+    "rules": 43,
+    "authority": "bundled Git-managed registry"
+  },
+  "multi_client": {
+    "multi_provider_task": "multi-demo-2026-09-28-03",
+    "mixed_task_cost": "0.1091082",
+    "providers": [
+      "anthropic",
+      "openai"
+    ],
+    "client_provider_filters": true,
+    "model_filter": true,
+    "quota_providers": 2,
+    "catalog_hash": "ece649c7e23a372f93478ec6632560aacff82426ac16f6df274a100d15031e82",
+    "sync_idempotent": true
+  },
+  "migration": {
+    "before_counts": {
+      "tasks": 20,
+      "events": 120,
+      "quota_snapshots": 40,
+      "metric_observations": 88
+    },
+    "original_event_payloads_equal_immediately_after_upgrade": 120,
+    "original_event_ids_and_stored_estimates_preserved_after_replay": 120
+  },
+  "phoenix_mixed_trace_verified": "0637915d58c32d97b0d2251404e1431c",
+  "prometheus_mixed_client_provider_series": 1,
+  "grafana_panels_queried": 34,
+  "data_mode": "demo",
+  "dashboard_sql_queries_all_demo_live": 99,
+  "postgres_restart_persistence": "passed; tools/persistence.py and mixed-provider ledger checked after native restart",
+  "tests": {
+    "sqlite_backend": 77,
+    "postgres_backend": 77,
+    "frontend": 4,
+    "frontend_build_lint_format": "passed",
+    "python_lint": "passed",
+    "python_dependency_audit_vulnerabilities": 0,
+    "npm_dependency_audit_vulnerabilities": 0
+  },
+  "docker_compose_configuration": "passed",
+  "docker_build_runtime_and_volume_restart": "unverified: no running Docker engine",
+  "native_client_authentication_tests": "not performed; all demonstrations are synthetic"
+}

@@ -1,0 +1,52 @@
+{
+  "task": {
+    "id": "demo-2026-09-28-01",
+    "project": "tabledossier",
+    "session_id": "demo-2026-09-28-session-01",
+    "tokens": {
+      "input": 12405,
+      "output": 3516,
+      "cache_read": 80400,
+      "cache_write": 7200
+    },
+    "llm_calls": 3,
+    "tool_calls": 1,
+    "duration_seconds": 180.0,
+    "estimated_api_cost": 0.17357499999999998,
+    "main_agent_activity": 68007,
+    "subagent_activity": 35514,
+    "quota_delta": [
+      {
+        "name": "5h",
+        "before": 20.0,
+        "after": 23.0,
+        "delta_pp": 3.0,
+        "reset_crossed": false,
+        "source_before": "manual",
+        "source_after": "manual",
+        "attribution": "account window change; concurrent tasks may contribute"
+      },
+      {
+        "name": "weekly",
+        "before": 12.0,
+        "after": 13.0,
+        "delta_pp": 1.0,
+        "reset_crossed": false,
+        "source_before": "manual",
+        "source_after": "manual",
+        "attribution": "account window change; concurrent tasks may contribute"
+      }
+    ],
+    "phoenix_trace_ids": [
+      "f259371eb76fa2e8c09faded12086f25"
+    ]
+  },
+  "phoenix": {
+    "data": {
+      "getTraceByOtelId": {
+        "traceId": "f259371eb76fa2e8c09faded12086f25"
+      }
+    }
+  },
+  "collector_metrics_present": true
+}

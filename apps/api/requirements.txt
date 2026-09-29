@@ -1,0 +1,2 @@
+# Exact reproducible Python dependency pins.
+-r requirements.lock

@@ -1,0 +1,1 @@
+See [the onboarding guide](../../docs/integrations/claude-code.md). JSON examples are fragments to merge into user settings, not replacements. The optional status-line script uses Python stdlib and documented stdin fields only.

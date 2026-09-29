@@ -1,0 +1,1470 @@
+{
+  "uid": "tracequota",
+  "title": "TraceQuota \u00b7 Local agent intelligence",
+  "tags": [
+    "tracequota",
+    "local-first"
+  ],
+  "schemaVersion": 39,
+  "version": 2,
+  "refresh": "15s",
+  "timezone": "utc",
+  "time": {
+    "from": "now-7d",
+    "to": "now"
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "data",
+        "label": "Data source",
+        "type": "custom",
+        "query": "all,live,demo",
+        "current": {
+          "text": "all",
+          "value": "all"
+        },
+        "options": [
+          {
+            "text": "all",
+            "value": "all",
+            "selected": true
+          },
+          {
+            "text": "live",
+            "value": "live",
+            "selected": false
+          },
+          {
+            "text": "demo",
+            "value": "demo",
+            "selected": false
+          }
+        ]
+      },
+      {
+        "name": "client",
+        "label": "Client",
+        "type": "query",
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "tracequota-postgres"
+        },
+        "query": "SELECT DISTINCT client_id FROM request_usage ORDER BY 1",
+        "refresh": 1,
+        "multi": true,
+        "includeAll": true,
+        "allValue": "__all",
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        }
+      },
+      {
+        "name": "provider",
+        "label": "Provider",
+        "type": "query",
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "tracequota-postgres"
+        },
+        "query": "SELECT DISTINCT provider FROM request_usage ORDER BY 1",
+        "refresh": 1,
+        "multi": true,
+        "includeAll": true,
+        "allValue": "__all",
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        }
+      },
+      {
+        "name": "model",
+        "label": "Model",
+        "type": "query",
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "tracequota-postgres"
+        },
+        "query": "SELECT DISTINCT model FROM request_usage ORDER BY 1",
+        "refresh": 1,
+        "multi": true,
+        "includeAll": true,
+        "allValue": "__all",
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        }
+      },
+      {
+        "name": "project",
+        "label": "Project",
+        "type": "query",
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "tracequota-postgres"
+        },
+        "query": "SELECT DISTINCT project FROM request_usage ORDER BY 1",
+        "refresh": 1,
+        "multi": true,
+        "includeAll": true,
+        "allValue": "__all",
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        }
+      },
+      {
+        "name": "agent",
+        "label": "Agent",
+        "type": "query",
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "tracequota-postgres"
+        },
+        "query": "SELECT DISTINCT agent FROM request_usage ORDER BY 1",
+        "refresh": 1,
+        "multi": true,
+        "includeAll": true,
+        "allValue": "__all",
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        }
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Token activity today",
+      "type": "stat",
+      "description": "Calculated from observed request metadata; demo data remains explicitly selectable.",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COALESCE(SUM(input+output+cache_read+cache_write),0) AS tokens FROM request_usage WHERE time>=date_trunc('day',now(),'UTC') AND ('${data}'='all' OR demo=('${data}'='demo')) AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) "
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showHeader": true
+      }
+    },
+    {
+      "id": 2,
+      "title": "Token activity this week",
+      "type": "stat",
+      "description": "Calculated from observed request metadata; demo data remains explicitly selectable.",
+      "gridPos": {
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COALESCE(SUM(input+output+cache_read+cache_write),0) AS tokens FROM request_usage WHERE time>=date_trunc('week',now(),'UTC') AND ('${data}'='all' OR demo=('${data}'='demo')) AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) "
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showHeader": true
+      }
+    },
+    {
+      "id": 3,
+      "title": "Tasks today",
+      "type": "stat",
+      "description": "Calculated from observed request metadata; demo data remains explicitly selectable.",
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(*) AS tasks FROM tasks WHERE started_at::timestamptz>=date_trunc('day',now(),'UTC') AND ('${data}'='all' OR (data->>'demo')::boolean=('${data}'='demo'))"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showHeader": true
+      }
+    },
+    {
+      "id": 4,
+      "title": "Sessions today",
+      "type": "stat",
+      "description": "Calculated from observed request metadata; demo data remains explicitly selectable.",
+      "gridPos": {
+        "x": 18,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(DISTINCT (provider,session_id)) AS sessions FROM request_usage WHERE time>=date_trunc('day',now(),'UTC') AND ('${data}'='all' OR demo=('${data}'='demo')) AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) "
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showHeader": true
+      }
+    },
+    {
+      "id": 5,
+      "title": "Uncached input tokens",
+      "type": "stat",
+      "description": "Calculated from observed request metadata; demo data remains explicitly selectable.",
+      "gridPos": {
+        "x": 0,
+        "y": 4,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COALESCE(SUM(input),0) AS tokens FROM request_usage WHERE $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo')) AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) "
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showHeader": true
+      }
+    },
+    {
+      "id": 6,
+      "title": "Output tokens",
+      "type": "stat",
+      "description": "Calculated from observed request metadata; demo data remains explicitly selectable.",
+      "gridPos": {
+        "x": 6,
+        "y": 4,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COALESCE(SUM(output),0) AS tokens FROM request_usage WHERE $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo')) AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) "
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showHeader": true
+      }
+    },
+    {
+      "id": 7,
+      "title": "Cache read tokens",
+      "type": "stat",
+      "description": "Calculated from observed request metadata; demo data remains explicitly selectable.",
+      "gridPos": {
+        "x": 12,
+        "y": 4,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COALESCE(SUM(cache_read),0) AS tokens FROM request_usage WHERE $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo')) AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) "
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showHeader": true
+      }
+    },
+    {
+      "id": 8,
+      "title": "Cache write tokens",
+      "type": "stat",
+      "description": "Calculated from observed request metadata; demo data remains explicitly selectable.",
+      "gridPos": {
+        "x": 18,
+        "y": 4,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COALESCE(SUM(cache_write),0) AS tokens FROM request_usage WHERE $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo')) AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) "
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showHeader": true
+      }
+    },
+    {
+      "id": 9,
+      "title": "Usage by model",
+      "type": "barchart",
+      "description": "Calculated from observed request metadata; demo data remains explicitly selectable.",
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT model, SUM(input+output+cache_read+cache_write) AS tokens FROM request_usage WHERE $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo'))  AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) GROUP BY model ORDER BY tokens DESC"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showHeader": true
+      }
+    },
+    {
+      "id": 10,
+      "title": "Usage by project",
+      "type": "barchart",
+      "description": "Calculated from observed request metadata; demo data remains explicitly selectable.",
+      "gridPos": {
+        "x": 12,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT project, SUM(input+output+cache_read+cache_write) AS tokens FROM request_usage WHERE $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo'))  AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) GROUP BY project ORDER BY tokens DESC"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showHeader": true
+      }
+    },
+    {
+      "id": 11,
+      "title": "Usage by agent",
+      "type": "barchart",
+      "description": "Calculated from observed request metadata; demo data remains explicitly selectable.",
+      "gridPos": {
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT agent, SUM(input+output+cache_read+cache_write) AS tokens FROM request_usage WHERE $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo'))  AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) GROUP BY agent ORDER BY tokens DESC"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showHeader": true
+      }
+    },
+    {
+      "id": 12,
+      "title": "Main vs subagents",
+      "type": "barchart",
+      "description": "Calculated from observed request metadata; demo data remains explicitly selectable.",
+      "gridPos": {
+        "x": 12,
+        "y": 16,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT agent_type, SUM(input+output+cache_read+cache_write) AS tokens FROM request_usage WHERE $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo'))  AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) GROUP BY agent_type ORDER BY tokens DESC"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showHeader": true
+      }
+    },
+    {
+      "id": 13,
+      "title": "Token activity over time",
+      "type": "timeseries",
+      "description": "Calculated from observed request metadata; demo data remains explicitly selectable.",
+      "gridPos": {
+        "x": 0,
+        "y": 24,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT date_trunc('hour',time) AS time,SUM(input+output+cache_read+cache_write) AS tokens FROM request_usage WHERE $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo'))  AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) GROUP BY 1 ORDER BY 1"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showHeader": true
+      }
+    },
+    {
+      "id": 14,
+      "title": "API-equivalent cost \u00b7 estimated",
+      "type": "timeseries",
+      "description": "Calculated from observed request metadata; demo data remains explicitly selectable.",
+      "gridPos": {
+        "x": 12,
+        "y": 24,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT date_trunc('hour',time) AS time,SUM(estimated_api_cost) AS estimated_usd FROM request_usage WHERE $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo'))  AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) GROUP BY 1 ORDER BY 1"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showHeader": true
+      }
+    },
+    {
+      "id": 15,
+      "title": "Task duration",
+      "type": "table",
+      "description": "Calculated from observed request metadata; demo data remains explicitly selectable.",
+      "gridPos": {
+        "x": 0,
+        "y": 32,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT project,EXTRACT(EPOCH FROM ((data->>'completed_at')::timestamptz-started_at::timestamptz)) AS duration_seconds FROM tasks WHERE data->>'completed_at' IS NOT NULL AND $__timeFilter(started_at::timestamptz) AND ('${data}'='all' OR (data->>'demo')::boolean=('${data}'='demo'))"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showHeader": true
+      }
+    },
+    {
+      "id": 16,
+      "title": "LLM calls per task",
+      "type": "table",
+      "description": "Calculated from observed request metadata; demo data remains explicitly selectable.",
+      "gridPos": {
+        "x": 12,
+        "y": 32,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT task_id,COUNT(*) AS llm_calls FROM request_usage WHERE $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo'))  AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) GROUP BY task_id"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showHeader": true
+      }
+    },
+    {
+      "id": 17,
+      "title": "Tool calls per task",
+      "type": "table",
+      "description": "Calculated from observed request metadata; demo data remains explicitly selectable.",
+      "gridPos": {
+        "x": 0,
+        "y": 40,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT task_id,COUNT(*) AS tool_calls FROM events WHERE kind='tool' AND $__timeFilter(timestamp::timestamptz) AND ('${data}'='all' OR (data->>'demo')::boolean=('${data}'='demo')) GROUP BY task_id"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showHeader": true
+      }
+    },
+    {
+      "id": 18,
+      "title": "5h quota history \u00b7 source labeled",
+      "type": "timeseries",
+      "description": "Manual/official/estimated/experimental are evidence sources. These are account windows, not token counters.",
+      "gridPos": {
+        "x": 12,
+        "y": 40,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT time,provider||'/'||account||'/'||source AS metric,used_percent AS value FROM quota_history WHERE \"window\"='5h' AND $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo')) ORDER BY time"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showHeader": true
+      }
+    },
+    {
+      "id": 19,
+      "title": "Weekly quota history \u00b7 source labeled",
+      "type": "timeseries",
+      "description": "Manual/official/estimated/experimental are evidence sources. These are account windows, not token counters.",
+      "gridPos": {
+        "x": 0,
+        "y": 48,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT time,provider||'/'||account||'/'||source AS metric,used_percent AS value FROM quota_history WHERE \"window\"='weekly' AND $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo')) ORDER BY time"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showHeader": true
+      }
+    },
+    {
+      "id": 20,
+      "title": "5h delta per task \u00b7 percentage points",
+      "type": "table",
+      "description": "Delta is in percentage points. NULL represents a reset crossing; concurrent tasks can contribute.",
+      "gridPos": {
+        "x": 12,
+        "y": 48,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT project,id,source_before,source_after,before_used,after_used,delta_pp FROM task_quota_deltas WHERE $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo'))"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showHeader": true
+      }
+    },
+    {
+      "id": 21,
+      "title": "Unpriced requests",
+      "type": "stat",
+      "description": "Calculated from observed request metadata; demo data remains explicitly selectable.",
+      "gridPos": {
+        "x": 0,
+        "y": 56,
+        "w": 6,
+        "h": 6
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(*) AS unpriced_requests FROM request_usage WHERE estimated_api_cost IS NULL AND $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo')) AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) "
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showHeader": true
+      }
+    },
+    {
+      "id": 22,
+      "title": "Provider-emitted cost \u00b7 separate estimate",
+      "type": "stat",
+      "description": "Emitted by provider telemetry. Claude reports an estimate; this is not an actual subscription bill.",
+      "gridPos": {
+        "x": 6,
+        "y": 56,
+        "w": 6,
+        "h": 6
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT SUM((data->>'provider_emitted_cost')::numeric) AS provider_emitted_usd FROM events WHERE kind='llm' AND $__timeFilter(timestamp::timestamptz) AND ('${data}'='all' OR (data->>'demo')::boolean=('${data}'='demo'))"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showHeader": true
+      }
+    },
+    {
+      "id": 23,
+      "title": "Collector metrics \u00b7 measured OTLP",
+      "type": "timeseries",
+      "description": "Native provider/demo counters through the Collector; separate from request-ledger sums.",
+      "gridPos": {
+        "x": 12,
+        "y": 56,
+        "w": 12,
+        "h": 6
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "{__name__=~\"claude_code_token_usage.*|tracequota_demo_token_activity.*\"}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 24,
+      "title": "Token activity by client",
+      "type": "table",
+      "gridPos": {
+        "x": 0,
+        "y": 62,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "rawSql": "SELECT client_id, sum(input+output+cache_read+cache_write) AS known_token_activity FROM request_usage WHERE $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo')) AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) GROUP BY client_id",
+          "format": "table",
+          "rawQuery": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 25,
+      "title": "Token activity by provider",
+      "type": "table",
+      "gridPos": {
+        "x": 12,
+        "y": 62,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "rawSql": "SELECT provider, sum(input+output+cache_read+cache_write) AS known_token_activity FROM request_usage WHERE $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo')) AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) GROUP BY provider",
+          "format": "table",
+          "rawQuery": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 26,
+      "title": "Token activity by model",
+      "type": "table",
+      "gridPos": {
+        "x": 0,
+        "y": 70,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "rawSql": "SELECT model, sum(input+output+cache_read+cache_write) AS known_token_activity FROM request_usage WHERE $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo')) AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) GROUP BY model",
+          "format": "table",
+          "rawQuery": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 27,
+      "title": "API-equivalent cost by client",
+      "type": "table",
+      "gridPos": {
+        "x": 12,
+        "y": 70,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "rawSql": "SELECT client_id, CASE WHEN count(*)=count(estimated_api_cost) THEN sum(estimated_api_cost) END AS complete_usd, sum(priced_partial_cost) AS priced_partial_usd, count(*) FILTER (WHERE estimated_api_cost IS NULL) AS incomplete_calls FROM request_usage WHERE $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo')) AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) GROUP BY client_id",
+          "format": "table",
+          "rawQuery": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 28,
+      "title": "API-equivalent cost by provider",
+      "type": "table",
+      "gridPos": {
+        "x": 0,
+        "y": 78,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "rawSql": "SELECT provider, CASE WHEN count(*)=count(estimated_api_cost) THEN sum(estimated_api_cost) END AS complete_usd, sum(priced_partial_cost) AS priced_partial_usd, count(*) FILTER (WHERE estimated_api_cost IS NULL) AS incomplete_calls FROM request_usage WHERE $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo')) AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) GROUP BY provider",
+          "format": "table",
+          "rawQuery": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 29,
+      "title": "API-equivalent cost by agent",
+      "type": "table",
+      "gridPos": {
+        "x": 12,
+        "y": 78,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "rawSql": "SELECT agent, CASE WHEN count(*)=count(estimated_api_cost) THEN sum(estimated_api_cost) END AS complete_usd, sum(priced_partial_cost) AS priced_partial_usd, count(*) FILTER (WHERE estimated_api_cost IS NULL) AS incomplete_calls FROM request_usage WHERE $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo')) AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) GROUP BY agent",
+          "format": "table",
+          "rawQuery": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 30,
+      "title": "API-equivalent cost over time",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 0,
+        "y": 86,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "rawSql": "SELECT $__timeGroupAlias(time,'1h'), sum(priced_partial_cost) AS priced_components_usd FROM request_usage WHERE $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo')) AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) GROUP BY 1 ORDER BY 1",
+          "format": "time_series",
+          "rawQuery": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 31,
+      "title": "Pricing confidence distribution",
+      "type": "table",
+      "gridPos": {
+        "x": 12,
+        "y": 86,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "rawSql": "SELECT pricing_confidence, count(*) AS calls FROM request_usage WHERE $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo')) AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) GROUP BY pricing_confidence",
+          "format": "table",
+          "rawQuery": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 32,
+      "title": "Unknown or incomplete model calls",
+      "type": "table",
+      "gridPos": {
+        "x": 0,
+        "y": 94,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "rawSql": "SELECT provider, model, count(*) AS incomplete_calls FROM request_usage WHERE $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo')) AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) AND estimated_api_cost IS NULL GROUP BY provider, model",
+          "format": "table",
+          "rawQuery": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 33,
+      "title": "Cache Read cost",
+      "type": "stat",
+      "gridPos": {
+        "x": 12,
+        "y": 94,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "rawSql": "SELECT sum((c->>'subtotal')::numeric) AS priced_usd FROM request_usage, LATERAL json_array_elements(cost_components) c WHERE $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo')) AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) AND c->>'metric'='cache_read'",
+          "format": "table",
+          "rawQuery": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 34,
+      "title": "Cache Write cost",
+      "type": "stat",
+      "gridPos": {
+        "x": 0,
+        "y": 102,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "tracequota-postgres"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "rawSql": "SELECT sum((c->>'subtotal')::numeric) AS priced_usd FROM request_usage, LATERAL json_array_elements(cost_components) c WHERE $__timeFilter(time) AND ('${data}'='all' OR demo=('${data}'='demo')) AND ('__all' IN (${client:sqlstring}) OR client_id IN (${client:sqlstring})) AND ('__all' IN (${provider:sqlstring}) OR provider IN (${provider:sqlstring})) AND ('__all' IN (${model:sqlstring}) OR model IN (${model:sqlstring})) AND ('__all' IN (${project:sqlstring}) OR project IN (${project:sqlstring})) AND ('__all' IN (${agent:sqlstring}) OR agent IN (${agent:sqlstring})) AND c->>'metric'='cache_write'",
+          "format": "table",
+          "rawQuery": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "options": {}
+    }
+  ]
+}

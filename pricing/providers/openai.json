@@ -1,0 +1,1218 @@
+{
+  "schema_version": 1,
+  "version": "2026.09.28.1",
+  "provider": "openai",
+  "models": [
+    {
+      "id": "gpt-6-sol",
+      "aliases": []
+    },
+    {
+      "id": "gpt-6-astra",
+      "aliases": []
+    },
+    {
+      "id": "gpt-6-luna",
+      "aliases": []
+    },
+    {
+      "id": "gpt-5.3-codex",
+      "aliases": []
+    }
+  ],
+  "rules": [
+    {
+      "id": "openai/gpt-6-sol/standard-short/2026-09-28",
+      "model_id": "gpt-6-sol",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "openai",
+        "service_tier": "standard",
+        "region": "global",
+        "context_min": 0,
+        "context_max": 272000
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "2",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "10",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.20",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "2.50",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "title": "Openai official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "openai/gpt-6-sol/standard-long/2026-09-28",
+      "model_id": "gpt-6-sol",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "openai",
+        "service_tier": "standard",
+        "region": "global",
+        "context_min": 272001,
+        "context_max": null
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "4",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "15.0",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.40",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "5.00",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "title": "Openai official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "openai/gpt-6-sol/batch-short/2026-09-28",
+      "model_id": "gpt-6-sol",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "openai",
+        "service_tier": "batch",
+        "region": "global",
+        "context_min": 0,
+        "context_max": 272000
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "1.0",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "5.0",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.100",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "1.250",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "title": "Openai official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "openai/gpt-6-sol/batch-long/2026-09-28",
+      "model_id": "gpt-6-sol",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "openai",
+        "service_tier": "batch",
+        "region": "global",
+        "context_min": 272001,
+        "context_max": null
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "2.0",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "7.50",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.200",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "2.500",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "title": "Openai official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "openai/gpt-6-sol/flex-short/2026-09-28",
+      "model_id": "gpt-6-sol",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "openai",
+        "service_tier": "flex",
+        "region": "global",
+        "context_min": 0,
+        "context_max": 272000
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "1.0",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "5.0",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.100",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "1.250",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "title": "Openai official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "openai/gpt-6-sol/flex-long/2026-09-28",
+      "model_id": "gpt-6-sol",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "openai",
+        "service_tier": "flex",
+        "region": "global",
+        "context_min": 272001,
+        "context_max": null
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "2.0",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "7.50",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.200",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "2.500",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "title": "Openai official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "openai/gpt-6-sol/fast-short/2026-09-28",
+      "model_id": "gpt-6-sol",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "openai",
+        "service_tier": "fast",
+        "region": "global",
+        "context_min": 0,
+        "context_max": 272000
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "4",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "20",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.40",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "5.00",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "title": "Openai official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "openai/gpt-6-sol/fast-long/2026-09-28",
+      "model_id": "gpt-6-sol",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "openai",
+        "service_tier": "fast",
+        "region": "global",
+        "context_min": 272001,
+        "context_max": null
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "8",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "30.0",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.80",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "10.00",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "title": "Openai official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "openai/gpt-6-astra/standard-short/2026-09-28",
+      "model_id": "gpt-6-astra",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "openai",
+        "service_tier": "standard",
+        "region": "global",
+        "context_min": 0,
+        "context_max": 272000
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "10",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "50",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "1",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "12.50",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "title": "Openai official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "openai/gpt-6-astra/standard-long/2026-09-28",
+      "model_id": "gpt-6-astra",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "openai",
+        "service_tier": "standard",
+        "region": "global",
+        "context_min": 272001,
+        "context_max": null
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "20",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "75.0",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "2",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "25.00",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "title": "Openai official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "openai/gpt-6-astra/batch-short/2026-09-28",
+      "model_id": "gpt-6-astra",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "openai",
+        "service_tier": "batch",
+        "region": "global",
+        "context_min": 0,
+        "context_max": 272000
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "5.0",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "25.0",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.5",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "6.250",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "title": "Openai official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "openai/gpt-6-astra/batch-long/2026-09-28",
+      "model_id": "gpt-6-astra",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "openai",
+        "service_tier": "batch",
+        "region": "global",
+        "context_min": 272001,
+        "context_max": null
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "10.0",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "37.50",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "1.0",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "12.500",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "title": "Openai official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "openai/gpt-6-astra/flex-short/2026-09-28",
+      "model_id": "gpt-6-astra",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "openai",
+        "service_tier": "flex",
+        "region": "global",
+        "context_min": 0,
+        "context_max": 272000
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "5.0",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "25.0",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.5",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "6.250",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "title": "Openai official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "openai/gpt-6-astra/flex-long/2026-09-28",
+      "model_id": "gpt-6-astra",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "openai",
+        "service_tier": "flex",
+        "region": "global",
+        "context_min": 272001,
+        "context_max": null
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "10.0",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "37.50",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "1.0",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "12.500",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "title": "Openai official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "openai/gpt-6-astra/fast-short/2026-09-28",
+      "model_id": "gpt-6-astra",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "openai",
+        "service_tier": "fast",
+        "region": "global",
+        "context_min": 0,
+        "context_max": 272000
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "20",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "100",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "2",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "25.00",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "title": "Openai official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "openai/gpt-6-astra/fast-long/2026-09-28",
+      "model_id": "gpt-6-astra",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "openai",
+        "service_tier": "fast",
+        "region": "global",
+        "context_min": 272001,
+        "context_max": null
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "40",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "150.0",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "4",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "50.00",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "title": "Openai official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "openai/gpt-6-luna/standard-short/2026-09-28",
+      "model_id": "gpt-6-luna",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "openai",
+        "service_tier": "standard",
+        "region": "global",
+        "context_min": 0,
+        "context_max": 272000
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "0.10",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "0.50",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.01",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "0.125",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "title": "Openai official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "openai/gpt-6-luna/standard-long/2026-09-28",
+      "model_id": "gpt-6-luna",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "openai",
+        "service_tier": "standard",
+        "region": "global",
+        "context_min": 272001,
+        "context_max": null
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "0.20",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "0.750",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.02",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "0.250",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "title": "Openai official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "openai/gpt-6-luna/batch-short/2026-09-28",
+      "model_id": "gpt-6-luna",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "openai",
+        "service_tier": "batch",
+        "region": "global",
+        "context_min": 0,
+        "context_max": 272000
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "0.050",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "0.250",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.005",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "0.0625",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "title": "Openai official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "openai/gpt-6-luna/batch-long/2026-09-28",
+      "model_id": "gpt-6-luna",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "openai",
+        "service_tier": "batch",
+        "region": "global",
+        "context_min": 272001,
+        "context_max": null
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "0.100",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "0.3750",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.010",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "0.1250",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "title": "Openai official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "openai/gpt-6-luna/flex-short/2026-09-28",
+      "model_id": "gpt-6-luna",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "openai",
+        "service_tier": "flex",
+        "region": "global",
+        "context_min": 0,
+        "context_max": 272000
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "0.050",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "0.250",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.005",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "0.0625",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "title": "Openai official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "openai/gpt-6-luna/flex-long/2026-09-28",
+      "model_id": "gpt-6-luna",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "openai",
+        "service_tier": "flex",
+        "region": "global",
+        "context_min": 272001,
+        "context_max": null
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "0.100",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "0.3750",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.010",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "0.1250",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "title": "Openai official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "openai/gpt-6-luna/fast-short/2026-09-28",
+      "model_id": "gpt-6-luna",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "openai",
+        "service_tier": "fast",
+        "region": "global",
+        "context_min": 0,
+        "context_max": 272000
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "0.20",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "1.00",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.02",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "0.250",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "title": "Openai official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "openai/gpt-6-luna/fast-long/2026-09-28",
+      "model_id": "gpt-6-luna",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "openai",
+        "service_tier": "fast",
+        "region": "global",
+        "context_min": 272001,
+        "context_max": null
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "0.40",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "1.500",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.04",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "0.500",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "title": "Openai official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "openai/gpt-5.3-codex/standard/2026-09-28",
+      "model_id": "gpt-5.3-codex",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "openai",
+        "service_tier": "standard",
+        "region": "global"
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "1.75",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "14",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": ".175",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://developers.openai.com/api/docs/pricing",
+        "title": "Openai official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    }
+  ],
+  "currency": "USD"
+}

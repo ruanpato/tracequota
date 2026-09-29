@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Ruan Pato
+
+apiVersion: 1
+providers:
+  - name: TraceQuota
+    folder: TraceQuota
+    type: file
+    options:
+      path: /var/lib/grafana/dashboards

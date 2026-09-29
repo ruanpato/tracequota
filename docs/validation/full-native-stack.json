@@ -1,0 +1,21 @@
+{
+  "runtime": "native macOS Apple Silicon; Docker path still unverified",
+  "checked_at_epoch": 1790642640.306047,
+  "services": {
+    "postgres": "17",
+    "collector": "0.161.0",
+    "phoenix": "13.15.0",
+    "prometheus": "3.5.0",
+    "grafana": "12.3.0"
+  },
+  "native_pipeline_smoke": "passed",
+  "demo_tasks": 20,
+  "llm_requests": 60,
+  "total_token_activity": 3207000,
+  "cache_read_tokens": 2406570,
+  "prometheus_project_category_series": 12,
+  "native_postgres_restart_persistence": "passed",
+  "docker_startup_and_volume_restart": "unverified",
+  "grafana_panels_queried": 23,
+  "data_mode": "demo"
+}

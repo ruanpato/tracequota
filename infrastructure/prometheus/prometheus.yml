@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Ruan Pato
+
+global:
+  scrape_interval: 10s
+scrape_configs:
+  - job_name: agent-telemetry
+    static_configs:
+      - targets: [otel-collector:8889]
+  - job_name: tracequota-ledger
+    static_configs:
+      - targets: [tracequota-api:8000]

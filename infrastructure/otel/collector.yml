@@ -1,0 +1,117 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Ruan Pato
+
+extensions:
+  health_check:
+    endpoint: 0.0.0.0:13133
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+processors:
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 256
+    spike_limit_mib: 64
+  transform/privacy:
+    error_mode: propagate
+    trace_statements:
+    - context: resource
+      statements:
+      - keep_keys(attributes, ["agent.name", "agent.type", "agent_id", "app.version", "cache_creation_tokens", "cache_read_tokens", "cached_token_count", "client.id", "client_request_id", "cloud.region", "conversation.id", "cost_usd", "cost_usd_micros", "duration_ms", "event.kind", "event.name", "event.sequence", "event.timestamp", "gen_ai.conversation.id", "gen_ai.operation.name", "gen_ai.provider.name", "gen_ai.request.model", "gen_ai.request.service_tier", "gen_ai.response.id", "gen_ai.response.model", "gen_ai.system", "gen_ai.tool.name", "gen_ai.tool.type", "gen_ai.usage.cache_creation.input_tokens", "gen_ai.usage.cache_read.input_tokens", "gen_ai.usage.input_tokens", "gen_ai.usage.output_tokens", "gen_ai.usage.reasoning.output_tokens", "git.branch", "git.commit", "git.repository", "host.name", "input_token_count", "input_tokens", "llm.token_count.completion", "llm.token_count.prompt", "llm.token_count.prompt_details.cache_read", "llm.token_count.prompt_details.cache_write", "mcp.server.name", "model", "openinference.span.kind", "output_token_count", "output_tokens", "parent_agent_id", "project.name", "prompt.id", "query_source", "query_source_safe", "reasoning_token_count", "request_id", "service.name", "service.version", "session.id", "source.surface", "span.type", "token.count", "token.type", "tool_name", "tracequota.account", "tracequota.billing_platform", "tracequota.cache_write_ttl", "tracequota.client.id", "tracequota.client.name", "tracequota.client.surface", "tracequota.client.version", "tracequota.context_tokens", "tracequota.demo", "tracequota.integration.type", "tracequota.integration_type", "tracequota.pricing.variant", "tracequota.project", "tracequota.region", "tracequota.runtime", "tracequota.runtime.name", "tracequota.service_tier", "tracequota.source_surface", "tracequota.status", "tracequota.surface", "tracequota.task.id", "tracequota.task.kind", "tracequota.task.title", "tracequota.usage.cache_read", "tracequota.usage.cache_storage_token_hours", "tracequota.usage.cache_write", "tracequota.usage.input_semantics", "tracequota.usage.input_total", "tracequota.usage.input_uncached", "tracequota.usage.output_semantics", "tracequota.usage.output_total", "tracequota.usage.reasoning", "tracequota.usage.tool_requests", "tracequota.workspace", "type", "vcs.ref.head.name", "vcs.ref.head.revision", "vcs.repository.name", "vcs.repository.url.full"])
+    - context: span
+      statements:
+      - keep_keys(attributes, ["agent.name", "agent.type", "agent_id", "app.version", "cache_creation_tokens", "cache_read_tokens", "cached_token_count", "client.id", "client_request_id", "cloud.region", "conversation.id", "cost_usd", "cost_usd_micros", "duration_ms", "event.kind", "event.name", "event.sequence", "event.timestamp", "gen_ai.conversation.id", "gen_ai.operation.name", "gen_ai.provider.name", "gen_ai.request.model", "gen_ai.request.service_tier", "gen_ai.response.id", "gen_ai.response.model", "gen_ai.system", "gen_ai.tool.name", "gen_ai.tool.type", "gen_ai.usage.cache_creation.input_tokens", "gen_ai.usage.cache_read.input_tokens", "gen_ai.usage.input_tokens", "gen_ai.usage.output_tokens", "gen_ai.usage.reasoning.output_tokens", "git.branch", "git.commit", "git.repository", "host.name", "input_token_count", "input_tokens", "llm.token_count.completion", "llm.token_count.prompt", "llm.token_count.prompt_details.cache_read", "llm.token_count.prompt_details.cache_write", "mcp.server.name", "model", "openinference.span.kind", "output_token_count", "output_tokens", "parent_agent_id", "project.name", "prompt.id", "query_source", "query_source_safe", "reasoning_token_count", "request_id", "service.name", "service.version", "session.id", "source.surface", "span.type", "token.count", "token.type", "tool_name", "tracequota.account", "tracequota.billing_platform", "tracequota.cache_write_ttl", "tracequota.client.id", "tracequota.client.name", "tracequota.client.surface", "tracequota.client.version", "tracequota.context_tokens", "tracequota.demo", "tracequota.integration.type", "tracequota.integration_type", "tracequota.pricing.variant", "tracequota.project", "tracequota.region", "tracequota.runtime", "tracequota.runtime.name", "tracequota.service_tier", "tracequota.source_surface", "tracequota.status", "tracequota.surface", "tracequota.task.id", "tracequota.task.kind", "tracequota.task.title", "tracequota.usage.cache_read", "tracequota.usage.cache_storage_token_hours", "tracequota.usage.cache_write", "tracequota.usage.input_semantics", "tracequota.usage.input_total", "tracequota.usage.input_uncached", "tracequota.usage.output_semantics", "tracequota.usage.output_total", "tracequota.usage.reasoning", "tracequota.usage.tool_requests", "tracequota.workspace", "type", "vcs.ref.head.name", "vcs.ref.head.revision", "vcs.repository.name", "vcs.repository.url.full"])
+      - set(name, "agent.span")
+      - set(name, attributes["span.type"]) where attributes["span.type"] != nil
+      - set(name, attributes["openinference.span.kind"]) where attributes["openinference.span.kind"]
+        != nil
+      - set(status.message, "")
+    - context: spanevent
+      statements:
+      - keep_keys(attributes, [])
+    log_statements:
+    - context: resource
+      statements:
+      - keep_keys(attributes, ["agent.name", "agent.type", "agent_id", "app.version", "cache_creation_tokens", "cache_read_tokens", "cached_token_count", "client.id", "client_request_id", "cloud.region", "conversation.id", "cost_usd", "cost_usd_micros", "duration_ms", "event.kind", "event.name", "event.sequence", "event.timestamp", "gen_ai.conversation.id", "gen_ai.operation.name", "gen_ai.provider.name", "gen_ai.request.model", "gen_ai.request.service_tier", "gen_ai.response.id", "gen_ai.response.model", "gen_ai.system", "gen_ai.tool.name", "gen_ai.tool.type", "gen_ai.usage.cache_creation.input_tokens", "gen_ai.usage.cache_read.input_tokens", "gen_ai.usage.input_tokens", "gen_ai.usage.output_tokens", "gen_ai.usage.reasoning.output_tokens", "git.branch", "git.commit", "git.repository", "host.name", "input_token_count", "input_tokens", "llm.token_count.completion", "llm.token_count.prompt", "llm.token_count.prompt_details.cache_read", "llm.token_count.prompt_details.cache_write", "mcp.server.name", "model", "openinference.span.kind", "output_token_count", "output_tokens", "parent_agent_id", "project.name", "prompt.id", "query_source", "query_source_safe", "reasoning_token_count", "request_id", "service.name", "service.version", "session.id", "source.surface", "span.type", "token.count", "token.type", "tool_name", "tracequota.account", "tracequota.billing_platform", "tracequota.cache_write_ttl", "tracequota.client.id", "tracequota.client.name", "tracequota.client.surface", "tracequota.client.version", "tracequota.context_tokens", "tracequota.demo", "tracequota.integration.type", "tracequota.integration_type", "tracequota.pricing.variant", "tracequota.project", "tracequota.region", "tracequota.runtime", "tracequota.runtime.name", "tracequota.service_tier", "tracequota.source_surface", "tracequota.status", "tracequota.surface", "tracequota.task.id", "tracequota.task.kind", "tracequota.task.title", "tracequota.usage.cache_read", "tracequota.usage.cache_storage_token_hours", "tracequota.usage.cache_write", "tracequota.usage.input_semantics", "tracequota.usage.input_total", "tracequota.usage.input_uncached", "tracequota.usage.output_semantics", "tracequota.usage.output_total", "tracequota.usage.reasoning", "tracequota.usage.tool_requests", "tracequota.workspace", "type", "vcs.ref.head.name", "vcs.ref.head.revision", "vcs.repository.name", "vcs.repository.url.full"])
+    - context: log
+      statements:
+      - set(attributes["event.name"], body) where body == "claude_code.api_request"
+        or body == "claude_code.tool_result" or body == "claude_code.user_prompt"
+        or body == "codex.sse_event" or body == "codex.api_request" or body == "codex.tool_result"
+        or body == "codex.sse_event" or body == "codex.api_request" or body == "codex.tool_result"
+        or body == "codex.sse_event" or body == "codex.api_request" or body == "codex.tool_result"
+      - keep_keys(attributes, ["agent.name", "agent.type", "agent_id", "app.version", "cache_creation_tokens", "cache_read_tokens", "cached_token_count", "client.id", "client_request_id", "cloud.region", "conversation.id", "cost_usd", "cost_usd_micros", "duration_ms", "event.kind", "event.name", "event.sequence", "event.timestamp", "gen_ai.conversation.id", "gen_ai.operation.name", "gen_ai.provider.name", "gen_ai.request.model", "gen_ai.request.service_tier", "gen_ai.response.id", "gen_ai.response.model", "gen_ai.system", "gen_ai.tool.name", "gen_ai.tool.type", "gen_ai.usage.cache_creation.input_tokens", "gen_ai.usage.cache_read.input_tokens", "gen_ai.usage.input_tokens", "gen_ai.usage.output_tokens", "gen_ai.usage.reasoning.output_tokens", "git.branch", "git.commit", "git.repository", "host.name", "input_token_count", "input_tokens", "llm.token_count.completion", "llm.token_count.prompt", "llm.token_count.prompt_details.cache_read", "llm.token_count.prompt_details.cache_write", "mcp.server.name", "model", "openinference.span.kind", "output_token_count", "output_tokens", "parent_agent_id", "project.name", "prompt.id", "query_source", "query_source_safe", "reasoning_token_count", "request_id", "service.name", "service.version", "session.id", "source.surface", "span.type", "token.count", "token.type", "tool_name", "tracequota.account", "tracequota.billing_platform", "tracequota.cache_write_ttl", "tracequota.client.id", "tracequota.client.name", "tracequota.client.surface", "tracequota.client.version", "tracequota.context_tokens", "tracequota.demo", "tracequota.integration.type", "tracequota.integration_type", "tracequota.pricing.variant", "tracequota.project", "tracequota.region", "tracequota.runtime", "tracequota.runtime.name", "tracequota.service_tier", "tracequota.source_surface", "tracequota.status", "tracequota.surface", "tracequota.task.id", "tracequota.task.kind", "tracequota.task.title", "tracequota.usage.cache_read", "tracequota.usage.cache_storage_token_hours", "tracequota.usage.cache_write", "tracequota.usage.input_semantics", "tracequota.usage.input_total", "tracequota.usage.input_uncached", "tracequota.usage.output_semantics", "tracequota.usage.output_total", "tracequota.usage.reasoning", "tracequota.usage.tool_requests", "tracequota.workspace", "type", "vcs.ref.head.name", "vcs.ref.head.revision", "vcs.repository.name", "vcs.repository.url.full"])
+      - set(body, "")
+    metric_statements:
+    - context: resource
+      statements:
+      - keep_keys(attributes, ["agent.name", "agent.type", "agent_id", "app.version", "cache_creation_tokens", "cache_read_tokens", "cached_token_count", "client.id", "client_request_id", "cloud.region", "conversation.id", "cost_usd", "cost_usd_micros", "duration_ms", "event.kind", "event.name", "event.sequence", "event.timestamp", "gen_ai.conversation.id", "gen_ai.operation.name", "gen_ai.provider.name", "gen_ai.request.model", "gen_ai.request.service_tier", "gen_ai.response.id", "gen_ai.response.model", "gen_ai.system", "gen_ai.tool.name", "gen_ai.tool.type", "gen_ai.usage.cache_creation.input_tokens", "gen_ai.usage.cache_read.input_tokens", "gen_ai.usage.input_tokens", "gen_ai.usage.output_tokens", "gen_ai.usage.reasoning.output_tokens", "git.branch", "git.commit", "git.repository", "host.name", "input_token_count", "input_tokens", "llm.token_count.completion", "llm.token_count.prompt", "llm.token_count.prompt_details.cache_read", "llm.token_count.prompt_details.cache_write", "mcp.server.name", "model", "openinference.span.kind", "output_token_count", "output_tokens", "parent_agent_id", "project.name", "prompt.id", "query_source", "query_source_safe", "reasoning_token_count", "request_id", "service.name", "service.version", "session.id", "source.surface", "span.type", "token.count", "token.type", "tool_name", "tracequota.account", "tracequota.billing_platform", "tracequota.cache_write_ttl", "tracequota.client.id", "tracequota.client.name", "tracequota.client.surface", "tracequota.client.version", "tracequota.context_tokens", "tracequota.demo", "tracequota.integration.type", "tracequota.integration_type", "tracequota.pricing.variant", "tracequota.project", "tracequota.region", "tracequota.runtime", "tracequota.runtime.name", "tracequota.service_tier", "tracequota.source_surface", "tracequota.status", "tracequota.surface", "tracequota.task.id", "tracequota.task.kind", "tracequota.task.title", "tracequota.usage.cache_read", "tracequota.usage.cache_storage_token_hours", "tracequota.usage.cache_write", "tracequota.usage.input_semantics", "tracequota.usage.input_total", "tracequota.usage.input_uncached", "tracequota.usage.output_semantics", "tracequota.usage.output_total", "tracequota.usage.reasoning", "tracequota.usage.tool_requests", "tracequota.workspace", "type", "vcs.ref.head.name", "vcs.ref.head.revision", "vcs.repository.name", "vcs.repository.url.full"])
+    - context: metric
+      statements:
+      - set(description, "")
+    - context: datapoint
+      statements:
+      - keep_keys(attributes, ["agent.name", "agent.type", "agent_id", "app.version", "cache_creation_tokens", "cache_read_tokens", "cached_token_count", "client.id", "client_request_id", "cloud.region", "conversation.id", "cost_usd", "cost_usd_micros", "duration_ms", "event.kind", "event.name", "event.sequence", "event.timestamp", "gen_ai.conversation.id", "gen_ai.operation.name", "gen_ai.provider.name", "gen_ai.request.model", "gen_ai.request.service_tier", "gen_ai.response.id", "gen_ai.response.model", "gen_ai.system", "gen_ai.tool.name", "gen_ai.tool.type", "gen_ai.usage.cache_creation.input_tokens", "gen_ai.usage.cache_read.input_tokens", "gen_ai.usage.input_tokens", "gen_ai.usage.output_tokens", "gen_ai.usage.reasoning.output_tokens", "git.branch", "git.commit", "git.repository", "host.name", "input_token_count", "input_tokens", "llm.token_count.completion", "llm.token_count.prompt", "llm.token_count.prompt_details.cache_read", "llm.token_count.prompt_details.cache_write", "mcp.server.name", "model", "openinference.span.kind", "output_token_count", "output_tokens", "parent_agent_id", "project.name", "prompt.id", "query_source", "query_source_safe", "reasoning_token_count", "request_id", "service.name", "service.version", "session.id", "source.surface", "span.type", "token.count", "token.type", "tool_name", "tracequota.account", "tracequota.billing_platform", "tracequota.cache_write_ttl", "tracequota.client.id", "tracequota.client.name", "tracequota.client.surface", "tracequota.client.version", "tracequota.context_tokens", "tracequota.demo", "tracequota.integration.type", "tracequota.integration_type", "tracequota.pricing.variant", "tracequota.project", "tracequota.region", "tracequota.runtime", "tracequota.runtime.name", "tracequota.service_tier", "tracequota.source_surface", "tracequota.status", "tracequota.surface", "tracequota.task.id", "tracequota.task.kind", "tracequota.task.title", "tracequota.usage.cache_read", "tracequota.usage.cache_storage_token_hours", "tracequota.usage.cache_write", "tracequota.usage.input_semantics", "tracequota.usage.input_total", "tracequota.usage.input_uncached", "tracequota.usage.output_semantics", "tracequota.usage.output_total", "tracequota.usage.reasoning", "tracequota.usage.tool_requests", "tracequota.workspace", "type", "vcs.ref.head.name", "vcs.ref.head.revision", "vcs.repository.name", "vcs.repository.url.full"])
+  deltatocumulative:
+    max_stale: 24h
+  batch:
+    timeout: 1s
+    send_batch_size: 256
+  filter/private_events:
+    error_mode: propagate
+    traces:
+      spanevent:
+      - 'true'
+exporters:
+  otlp_http/phoenix:
+    endpoint: http://tracequota-api:8000/phoenix
+    compression: none
+  otlp_http/ledger:
+    endpoint: http://tracequota-api:8000
+    compression: none
+    retry_on_failure:
+      enabled: true
+      max_elapsed_time: 300s
+  prometheus:
+    endpoint: 0.0.0.0:8889
+    resource_to_telemetry_conversion:
+      enabled: true
+service:
+  extensions:
+  - health_check
+  pipelines:
+    traces:
+      receivers:
+      - otlp
+      processors:
+      - memory_limiter
+      - transform/privacy
+      - filter/private_events
+      - batch
+      exporters:
+      - otlp_http/phoenix
+      - otlp_http/ledger
+    logs:
+      receivers:
+      - otlp
+      processors:
+      - memory_limiter
+      - transform/privacy
+      - batch
+      exporters:
+      - otlp_http/ledger
+    metrics:
+      receivers:
+      - otlp
+      processors:
+      - memory_limiter
+      - transform/privacy
+      - deltatocumulative
+      - batch
+      exporters:
+      - prometheus
+      - otlp_http/ledger

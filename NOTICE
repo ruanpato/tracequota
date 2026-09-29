@@ -1,0 +1,10 @@
+TraceQuota
+Copyright 2026 Ruan Pato
+
+Licensed under the Apache License, Version 2.0. See LICENSE.
+
+This repository does not bundle third-party project source code. Dependencies
+and upstream container images retain their own licenses. The TraceQuota code,
+configuration, documentation, and original synthetic examples are covered by
+this project's license. Your telemetry, source code, and account data are not
+licensed to this project by using it.

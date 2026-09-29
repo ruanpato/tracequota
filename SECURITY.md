@@ -1,0 +1,9 @@
+# Security policy
+
+TraceQuota 0.2 is a single-user localhost deployment. All published ports bind 127.0.0.1. PostgreSQL has no published port. Images run without Docker socket access, host networking or privileged mode; the API and web runtime use unprivileged users. Grafana's PostgreSQL role has SELECT only and anonymous Grafana access is Viewer. The default admin/password and database password are local development credentials, not production secrets. Grafana analytics/update telemetry is disabled.
+
+Do not change binds to `0.0.0.0` or expose this stack to a LAN or the Internet without separately configuring authentication, TLS, proper secrets and firewall rules. No enterprise auth is implemented. Local processes and browser users on your machine can read telemetry. A browser-origin check mitigates cross-site writes; loopback is not a strong multi-user security boundary. Explicit task titles/repository labels are supplied by you and may contain sensitive information; use metadata carefully.
+
+Default pipeline content removal applies before Phoenix, Prometheus and the API. Hook HTTP bodies can contain private information in transit on loopback; they are not logged or retained. The optional status-line adapter only forwards documented numeric quota windows and session ID. No provider OAuth tokens are copied or stored, no MITM is performed and no artificial model requests are sent. Undocumented quota endpoints are not implemented.
+
+Report vulnerabilities privately through [the repository's Security page](https://github.com/ruanpato/tracequota/security) and its **Report a vulnerability** feature once private reporting is enabled. Until then, contact the repository owner privately through a verified channel; do not put secrets in public issues. This release has no promised response-time SLA. Dependency updates and CI checks are provided; runtime image vulnerability scans and upstream image refreshes remain ongoing maintenance.

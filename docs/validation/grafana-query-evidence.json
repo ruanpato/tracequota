@@ -1,0 +1,102 @@
+{
+  "runtime": "native Grafana 12.3.0; not Docker acceptance",
+  "queries": {
+    "A": {
+      "results": {
+        "A": {
+          "status": 200,
+          "frames": [
+            {
+              "schema": {
+                "refId": "A",
+                "meta": {
+                  "typeVersion": [
+                    0,
+                    0
+                  ],
+                  "executedQueryString": "SELECT SUM(cache_read) AS cache_read FROM request_usage WHERE demo=true"
+                },
+                "fields": [
+                  {
+                    "name": "cache_read",
+                    "type": "number",
+                    "typeInfo": {
+                      "frame": "float64",
+                      "nullable": true
+                    }
+                  }
+                ]
+              },
+              "data": {
+                "values": [
+                  [
+                    2406570
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "B": {
+      "results": {
+        "B": {
+          "status": 200,
+          "frames": [
+            {
+              "schema": {
+                "refId": "B",
+                "meta": {
+                  "type": "numeric-multi",
+                  "typeVersion": [
+                    0,
+                    1
+                  ],
+                  "custom": {
+                    "calculatedMinStep": 1200000,
+                    "resultType": "vector"
+                  },
+                  "executedQueryString": "Expr: sum({__name__=~\"tracequota_demo_token_activity.*\"})\nStep: 20m0s"
+                },
+                "fields": [
+                  {
+                    "name": "Time",
+                    "type": "time",
+                    "typeInfo": {
+                      "frame": "time.Time"
+                    },
+                    "config": {
+                      "interval": 1200000
+                    }
+                  },
+                  {
+                    "name": "Value",
+                    "type": "number",
+                    "typeInfo": {
+                      "frame": "float64"
+                    },
+                    "labels": {},
+                    "config": {
+                      "displayNameFromDS": "sum({__name__=~\"tracequota_demo_token_activity.*\"})"
+                    }
+                  }
+                ]
+              },
+              "data": {
+                "values": [
+                  [
+                    1790642429954
+                  ],
+                  [
+                    3207000
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

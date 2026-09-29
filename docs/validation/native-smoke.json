@@ -1,0 +1,11 @@
+{
+  "validation": "native partial acceptance; Docker/Prometheus/Grafana runtime not covered",
+  "demo_date": "2026-09-28",
+  "tasks": 20,
+  "llm_requests": 60,
+  "token_activity": 3207000,
+  "example_task": "demo-2026-09-28-01",
+  "example_5h_delta_pp": 3.0,
+  "phoenix_trace_id": "f259371eb76fa2e8c09faded12086f25",
+  "collector_metrics_present": true
+}

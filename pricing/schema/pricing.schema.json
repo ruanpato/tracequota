@@ -1,0 +1,285 @@
+{
+  "$defs": {
+    "Conditions": {
+      "additionalProperties": false,
+      "properties": {
+        "service_tier": {
+          "default": "standard",
+          "minLength": 1,
+          "title": "Service Tier",
+          "type": "string"
+        },
+        "billing_platform": {
+          "minLength": 1,
+          "title": "Billing Platform",
+          "type": "string"
+        },
+        "region": {
+          "default": "global",
+          "minLength": 1,
+          "title": "Region",
+          "type": "string"
+        },
+        "context_min": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Context Min",
+          "type": "integer"
+        },
+        "context_max": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Context Max"
+        },
+        "cache_write_ttl": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cache Write Ttl"
+        }
+      },
+      "required": [
+        "billing_platform"
+      ],
+      "title": "Conditions",
+      "type": "object"
+    },
+    "Model": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "aliases": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Aliases",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "Model",
+      "type": "object"
+    },
+    "Rate": {
+      "additionalProperties": false,
+      "properties": {
+        "metric": {
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Metric",
+          "type": "string"
+        },
+        "unit": {
+          "enum": [
+            "million_tokens",
+            "request",
+            "thousand_requests",
+            "million_token_hours",
+            "second"
+          ],
+          "title": "Unit",
+          "type": "string"
+        },
+        "rate": {
+          "title": "Rate",
+          "type": "string"
+        },
+        "required": {
+          "default": true,
+          "title": "Required",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "metric",
+        "unit",
+        "rate"
+      ],
+      "title": "Rate",
+      "type": "object"
+    },
+    "Rule": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "model_id": {
+          "minLength": 1,
+          "title": "Model Id",
+          "type": "string"
+        },
+        "effective_from": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "format": "date-time",
+              "type": "string"
+            }
+          ],
+          "title": "Effective From"
+        },
+        "effective_until": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Effective Until"
+        },
+        "conditions": {
+          "$ref": "#/$defs/Conditions"
+        },
+        "rates": {
+          "items": {
+            "$ref": "#/$defs/Rate"
+          },
+          "minItems": 1,
+          "title": "Rates",
+          "type": "array"
+        },
+        "reasoning_billing": {
+          "default": "included_in_output",
+          "enum": [
+            "included_in_output",
+            "separate",
+            "unsupported"
+          ],
+          "title": "Reasoning Billing",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/Source"
+        },
+        "notes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Notes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "model_id",
+        "effective_from",
+        "conditions",
+        "rates",
+        "source"
+      ],
+      "title": "Rule",
+      "type": "object"
+    },
+    "Source": {
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "minLength": 12,
+          "pattern": "^https://",
+          "title": "Url",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "checked_at": {
+          "format": "date",
+          "title": "Checked At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "url",
+        "title",
+        "checked_at"
+      ],
+      "title": "Source",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "version": {
+      "minLength": 1,
+      "title": "Version",
+      "type": "string"
+    },
+    "currency": {
+      "const": "USD",
+      "default": "USD",
+      "title": "Currency",
+      "type": "string"
+    },
+    "provider": {
+      "minLength": 1,
+      "title": "Provider",
+      "type": "string"
+    },
+    "models": {
+      "items": {
+        "$ref": "#/$defs/Model"
+      },
+      "minItems": 1,
+      "title": "Models",
+      "type": "array"
+    },
+    "rules": {
+      "items": {
+        "$ref": "#/$defs/Rule"
+      },
+      "minItems": 1,
+      "title": "Rules",
+      "type": "array"
+    }
+  },
+  "required": [
+    "version",
+    "provider",
+    "models",
+    "rules"
+  ],
+  "title": "Catalog",
+  "type": "object"
+}

@@ -1,0 +1,169 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Ruan Pato
+
+name: tracequota
+x-api: &api
+  image: tracequota-api:local
+  build:
+    context: .
+    dockerfile: apps/api/Dockerfile
+    target: runtime
+  environment: &api-env
+    DATABASE_URL: postgresql+psycopg://tracequota:${POSTGRES_PASSWORD:-tracequota-local}@postgres:5432/tracequota
+    PYTHONPATH: /app/apps/api
+    TRACEQUOTA_PRICING_SYNC: ${TRACEQUOTA_PRICING_SYNC:-true}
+services:
+  postgres:
+    image: postgres:17.6-alpine
+    environment:
+      POSTGRES_DB: tracequota
+      POSTGRES_USER: tracequota
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-tracequota-local}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./infrastructure/postgres/init.sql:/docker-entrypoint-initdb.d/01-grafana.sql:ro
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U tracequota -d tracequota']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+  tracequota-api:
+    <<: *api
+    environment:
+      <<: *api-env
+      GRAFANA_PUBLIC_URL: http://localhost:${GRAFANA_PORT:-3000}
+      PHOENIX_PUBLIC_URL: http://localhost:${PHOENIX_PORT:-6006}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: [CMD, python, -c, 'import urllib.request; urllib.request.urlopen("http://localhost:8000/health")']
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+  tracequota-web:
+    image: tracequota-web:local
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    ports: ['127.0.0.1:${WEB_PORT:-8080}:8080']
+    depends_on:
+      tracequota-api:
+        condition: service_healthy
+    healthcheck:
+      test: [CMD, wget, -q, --spider, http://127.0.0.1:8080/health]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+  phoenix:
+    image: arizephoenix/phoenix:13.15.0
+    environment:
+      PHOENIX_WORKING_DIR: /data
+    volumes: [phoenix-data:/data]
+    ports: ['127.0.0.1:${PHOENIX_PORT:-6006}:6006']
+    healthcheck:
+      test: [CMD, python, -c, 'import urllib.request; urllib.request.urlopen("http://localhost:6006/healthz")']
+      interval: 10s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.161.0
+    command: [--config=/etc/otelcol-contrib/config.yaml]
+    volumes: [./infrastructure/otel/collector.yml:/etc/otelcol-contrib/config.yaml:ro]
+    ports:
+      - '127.0.0.1:${OTLP_GRPC_PORT:-4317}:4317'
+      - '127.0.0.1:${OTLP_HTTP_PORT:-4318}:4318'
+    depends_on:
+      tracequota-api:
+        condition: service_healthy
+      phoenix:
+        condition: service_healthy
+    restart: unless-stopped
+    # Distroless upstream image has no shell or HTTP probe executable.
+    # Health extension is checked from the containerized doctor/smoke test.
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    command: [--config.file=/etc/prometheus/prometheus.yml, --storage.tsdb.path=/prometheus]
+    volumes:
+      - ./infrastructure/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    ports: ['127.0.0.1:${PROMETHEUS_PORT:-9090}:9090']
+    healthcheck:
+      test: [CMD, wget, -q, --spider, http://localhost:9090/-/healthy]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+  grafana:
+    image: grafana/grafana:12.3.0
+    environment:
+      GF_SECURITY_ADMIN_USER: local
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-tracequota-local}
+      GF_AUTH_ANONYMOUS_ENABLED: 'true'
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+      GF_ANALYTICS_REPORTING_ENABLED: 'false'
+      GF_ANALYTICS_CHECK_FOR_UPDATES: 'false'
+      GF_ANALYTICS_CHECK_FOR_PLUGIN_UPDATES: 'false'
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./infrastructure/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./dashboards:/var/lib/grafana/dashboards:ro
+    ports: ['127.0.0.1:${GRAFANA_PORT:-3000}:3000']
+    depends_on:
+      tracequota-api:
+        condition: service_healthy
+    healthcheck:
+      test: [CMD, wget, -q, --spider, http://localhost:3000/api/health]
+      interval: 10s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+  tracequota-demo:
+    <<: *api
+    profiles: [tools]
+    command: [python, examples/demo.py]
+    environment:
+      <<: *api-env
+      API_URL: http://tracequota-api:8000
+      OTLP_URL: http://otel-collector:4318
+    depends_on:
+      tracequota-api:
+        condition: service_healthy
+      otel-collector:
+        condition: service_started
+  tracequota-test:
+    <<: *api
+    profiles: [tools]
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+      target: test
+    image: tracequota-test:local
+    command: [python, -m, pytest, -q]
+    environment:
+      PYTHONPATH: /app/apps/api
+      DATABASE_URL: sqlite:////tmp/test.db
+  tracequota-doctor:
+    <<: *api
+    profiles: [tools]
+    command: [python, tools/doctor.py]
+  tracequota-smoke:
+    <<: *api
+    profiles: [tools]
+    command: [python, tools/smoke.py]
+    environment:
+      <<: *api-env
+      API_URL: http://tracequota-api:8000
+      OTLP_URL: http://otel-collector:4318
+      PHOENIX_URL: http://phoenix:6006
+      PROMETHEUS_URL: http://prometheus:9090
+      GRAFANA_URL: http://grafana:3000
+volumes:
+  postgres-data:
+  phoenix-data:
+  prometheus-data:
+  grafana-data:

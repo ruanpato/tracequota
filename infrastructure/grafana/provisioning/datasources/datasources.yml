@@ -1,0 +1,23 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Ruan Pato
+
+apiVersion: 1
+datasources:
+  - name: Prometheus
+    uid: prometheus
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true
+  - name: TraceQuota PostgreSQL
+    uid: tracequota-postgres
+    type: grafana-postgresql-datasource
+    url: postgres:5432
+    user: grafana_reader
+    secureJsonData:
+      password: local-readonly
+    jsonData:
+      database: tracequota
+      sslmode: disable
+      postgresVersion: 1700
+      timescaledb: false

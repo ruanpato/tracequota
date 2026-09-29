@@ -1,0 +1,406 @@
+{
+  "schema_version": 1,
+  "version": "2026.09.28.1",
+  "provider": "google",
+  "models": [
+    {
+      "id": "gemini-2.5-pro",
+      "aliases": []
+    }
+  ],
+  "rules": [
+    {
+      "id": "google/gemini-2.5-pro/standard-short/2026-09-28",
+      "model_id": "gemini-2.5-pro",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "google",
+        "service_tier": "standard",
+        "region": "global",
+        "context_min": 0,
+        "context_max": 200000
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "1.25",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "10",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.125",
+          "required": true
+        },
+        {
+          "metric": "cache_storage_token_hours",
+          "unit": "million_token_hours",
+          "rate": "4.50",
+          "required": false
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://ai.google.dev/gemini-api/docs/pricing",
+        "title": "Google official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules.",
+        "Cache storage priced only when token-hours are measured. Grounding/free allowances excluded; non-token bill may be incomplete."
+      ]
+    },
+    {
+      "id": "google/gemini-2.5-pro/standard-long/2026-09-28",
+      "model_id": "gemini-2.5-pro",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "google",
+        "service_tier": "standard",
+        "region": "global",
+        "context_min": 200001,
+        "context_max": null
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "2.5",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "15",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.25",
+          "required": true
+        },
+        {
+          "metric": "cache_storage_token_hours",
+          "unit": "million_token_hours",
+          "rate": "4.50",
+          "required": false
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://ai.google.dev/gemini-api/docs/pricing",
+        "title": "Google official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules.",
+        "Cache storage priced only when token-hours are measured. Grounding/free allowances excluded; non-token bill may be incomplete."
+      ]
+    },
+    {
+      "id": "google/gemini-2.5-pro/batch-short/2026-09-28",
+      "model_id": "gemini-2.5-pro",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "google",
+        "service_tier": "batch",
+        "region": "global",
+        "context_min": 0,
+        "context_max": 200000
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "0.625",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "5.0",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.125",
+          "required": true
+        },
+        {
+          "metric": "cache_storage_token_hours",
+          "unit": "million_token_hours",
+          "rate": "4.50",
+          "required": false
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://ai.google.dev/gemini-api/docs/pricing",
+        "title": "Google official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules.",
+        "Cache storage priced only when token-hours are measured. Grounding/free allowances excluded; non-token bill may be incomplete."
+      ]
+    },
+    {
+      "id": "google/gemini-2.5-pro/batch-long/2026-09-28",
+      "model_id": "gemini-2.5-pro",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "google",
+        "service_tier": "batch",
+        "region": "global",
+        "context_min": 200001,
+        "context_max": null
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "1.25",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "7.5",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.25",
+          "required": true
+        },
+        {
+          "metric": "cache_storage_token_hours",
+          "unit": "million_token_hours",
+          "rate": "4.50",
+          "required": false
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://ai.google.dev/gemini-api/docs/pricing",
+        "title": "Google official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules.",
+        "Cache storage priced only when token-hours are measured. Grounding/free allowances excluded; non-token bill may be incomplete."
+      ]
+    },
+    {
+      "id": "google/gemini-2.5-pro/flex-short/2026-09-28",
+      "model_id": "gemini-2.5-pro",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "google",
+        "service_tier": "flex",
+        "region": "global",
+        "context_min": 0,
+        "context_max": 200000
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "0.625",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "5.0",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.125",
+          "required": true
+        },
+        {
+          "metric": "cache_storage_token_hours",
+          "unit": "million_token_hours",
+          "rate": "4.50",
+          "required": false
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://ai.google.dev/gemini-api/docs/pricing",
+        "title": "Google official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules.",
+        "Cache storage priced only when token-hours are measured. Grounding/free allowances excluded; non-token bill may be incomplete."
+      ]
+    },
+    {
+      "id": "google/gemini-2.5-pro/flex-long/2026-09-28",
+      "model_id": "gemini-2.5-pro",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "google",
+        "service_tier": "flex",
+        "region": "global",
+        "context_min": 200001,
+        "context_max": null
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "1.25",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "7.5",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.25",
+          "required": true
+        },
+        {
+          "metric": "cache_storage_token_hours",
+          "unit": "million_token_hours",
+          "rate": "4.50",
+          "required": false
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://ai.google.dev/gemini-api/docs/pricing",
+        "title": "Google official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules.",
+        "Cache storage priced only when token-hours are measured. Grounding/free allowances excluded; non-token bill may be incomplete."
+      ]
+    },
+    {
+      "id": "google/gemini-2.5-pro/priority-short/2026-09-28",
+      "model_id": "gemini-2.5-pro",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "google",
+        "service_tier": "priority",
+        "region": "global",
+        "context_min": 0,
+        "context_max": 200000
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "2.250",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "18.0",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.2250",
+          "required": true
+        },
+        {
+          "metric": "cache_storage_token_hours",
+          "unit": "million_token_hours",
+          "rate": "8.10",
+          "required": false
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://ai.google.dev/gemini-api/docs/pricing",
+        "title": "Google official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules.",
+        "Cache storage priced only when token-hours are measured. Grounding/free allowances excluded; non-token bill may be incomplete."
+      ]
+    },
+    {
+      "id": "google/gemini-2.5-pro/priority-long/2026-09-28",
+      "model_id": "gemini-2.5-pro",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "google",
+        "service_tier": "priority",
+        "region": "global",
+        "context_min": 200001,
+        "context_max": null
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "4.50",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "27.0",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.450",
+          "required": true
+        },
+        {
+          "metric": "cache_storage_token_hours",
+          "unit": "million_token_hours",
+          "rate": "8.10",
+          "required": false
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://ai.google.dev/gemini-api/docs/pricing",
+        "title": "Google official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules.",
+        "Cache storage priced only when token-hours are measured. Grounding/free allowances excluded; non-token bill may be incomplete."
+      ]
+    }
+  ],
+  "currency": "USD"
+}

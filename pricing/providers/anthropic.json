@@ -1,0 +1,500 @@
+{
+  "schema_version": 1,
+  "version": "2026.09.28.1",
+  "provider": "anthropic",
+  "models": [
+    {
+      "id": "claude-sonnet-4-6",
+      "aliases": []
+    },
+    {
+      "id": "claude-sonnet-5-5",
+      "aliases": []
+    },
+    {
+      "id": "claude-opus-4-6",
+      "aliases": []
+    },
+    {
+      "id": "claude-opus-5-5",
+      "aliases": []
+    },
+    {
+      "id": "claude-haiku-4-5",
+      "aliases": []
+    }
+  ],
+  "rules": [
+    {
+      "id": "anthropic/claude-sonnet-4-6/standard-5m/2026-09-28",
+      "model_id": "claude-sonnet-4-6",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "anthropic",
+        "service_tier": "standard",
+        "region": "global",
+        "cache_write_ttl": "5m"
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "3",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "15",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.30",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "3.75",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+        "title": "Anthropic official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "anthropic/claude-sonnet-4-6/standard-1h/2026-09-28",
+      "model_id": "claude-sonnet-4-6",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "anthropic",
+        "service_tier": "standard",
+        "region": "global",
+        "cache_write_ttl": "1h"
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "3",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "15",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.30",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "6",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+        "title": "Anthropic official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "anthropic/claude-sonnet-5-5/standard-5m/2026-09-28",
+      "model_id": "claude-sonnet-5-5",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "anthropic",
+        "service_tier": "standard",
+        "region": "global",
+        "cache_write_ttl": "5m"
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "2",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "10",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.20",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "2.50",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+        "title": "Anthropic official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "anthropic/claude-sonnet-5-5/standard-1h/2026-09-28",
+      "model_id": "claude-sonnet-5-5",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "anthropic",
+        "service_tier": "standard",
+        "region": "global",
+        "cache_write_ttl": "1h"
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "2",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "10",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.20",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "4",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+        "title": "Anthropic official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "anthropic/claude-opus-4-6/standard-5m/2026-09-28",
+      "model_id": "claude-opus-4-6",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "anthropic",
+        "service_tier": "standard",
+        "region": "global",
+        "cache_write_ttl": "5m"
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "5",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "25",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.50",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "6.25",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+        "title": "Anthropic official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "anthropic/claude-opus-4-6/standard-1h/2026-09-28",
+      "model_id": "claude-opus-4-6",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "anthropic",
+        "service_tier": "standard",
+        "region": "global",
+        "cache_write_ttl": "1h"
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "5",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "25",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.50",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "10",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+        "title": "Anthropic official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "anthropic/claude-opus-5-5/standard-5m/2026-09-28",
+      "model_id": "claude-opus-5-5",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "anthropic",
+        "service_tier": "standard",
+        "region": "global",
+        "cache_write_ttl": "5m"
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "4",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "20",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.20",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "5.00",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+        "title": "Anthropic official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "anthropic/claude-opus-5-5/standard-1h/2026-09-28",
+      "model_id": "claude-opus-5-5",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "anthropic",
+        "service_tier": "standard",
+        "region": "global",
+        "cache_write_ttl": "1h"
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "4",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "20",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.20",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "8",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+        "title": "Anthropic official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "anthropic/claude-haiku-4-5/standard-5m/2026-09-28",
+      "model_id": "claude-haiku-4-5",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "anthropic",
+        "service_tier": "standard",
+        "region": "global",
+        "cache_write_ttl": "5m"
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "1",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "5",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.10",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "1.25",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+        "title": "Anthropic official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    },
+    {
+      "id": "anthropic/claude-haiku-4-5/standard-1h/2026-09-28",
+      "model_id": "claude-haiku-4-5",
+      "effective_from": "2026-09-28",
+      "effective_until": null,
+      "conditions": {
+        "billing_platform": "anthropic",
+        "service_tier": "standard",
+        "region": "global",
+        "cache_write_ttl": "1h"
+      },
+      "rates": [
+        {
+          "metric": "input_uncached",
+          "unit": "million_tokens",
+          "rate": "1",
+          "required": true
+        },
+        {
+          "metric": "output_total",
+          "unit": "million_tokens",
+          "rate": "5",
+          "required": true
+        },
+        {
+          "metric": "cache_read",
+          "unit": "million_tokens",
+          "rate": "0.10",
+          "required": true
+        },
+        {
+          "metric": "cache_write",
+          "unit": "million_tokens",
+          "rate": "2",
+          "required": true
+        }
+      ],
+      "reasoning_billing": "included_in_output",
+      "source": {
+        "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+        "title": "Anthropic official API pricing",
+        "checked_at": "2026-09-28"
+      },
+      "notes": [
+        "Effective date is verification date; no claim about earlier pricing. Text token workload only; other modalities require dedicated rules."
+      ]
+    }
+  ],
+  "currency": "USD"
+}

@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Ruan Pato
+
+name: Docker Desktop acceptance
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: 'Self-hosted Docker Desktop runner label (macOS-ARM64 or Windows-WSL2)'
+        required: true
+        type: choice
+        options: [macOS-ARM64, Windows-WSL2]
+permissions:
+  contents: read
+jobs:
+  desktop:
+    runs-on: [self-hosted, '${{ inputs.platform }}']
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: python tools/acceptance.py
