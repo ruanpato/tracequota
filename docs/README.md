@@ -40,3 +40,5 @@ Start with [Quickstart](quickstart.md), then [configuration/backups/updates](con
 [Release readiness](release-readiness.md) is the current publication/installation record. [Multi-client implementation](multi-client-report.md) and [initial V1 implementation](implementation-report.md) retain dated evidence and limitations; they are historical records, not current Quickstart instructions. Curated `validation/` and `screenshots/` files use synthetic/local test data. Temporary logs, live databases, environment files, dependencies and build outputs are ignored.
 
 [Upstream capability research](research/current-capabilities.md) records documentation provenance. [Landscape research](research/landscape.md) explains design choices without claiming live integration certification.
+
+Current container and fresh-install evidence: [container-readiness.json](validation/container-readiness.json).

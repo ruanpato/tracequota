@@ -1,0 +1,158 @@
+{
+  "checked_at": "2026-09-29T10:47:50.694297+00:00",
+  "project": "TraceQuota",
+  "version": "0.2.0",
+  "repository": "https://github.com/ruanpato/tracequota",
+  "visibility": "private",
+  "default_branch": "main",
+  "license": "Apache-2.0",
+  "tested_application_commit": "4d90525ae7ad87058cc4b5fea829fc33b41c5bfa",
+  "environment": {
+    "host": "macOS",
+    "runtime": "Colima 0.10.3",
+    "docker_engine": "29.5.2",
+    "compose": "5.5.1",
+    "container_platform": "linux/arm64",
+    "python": "3.12.11",
+    "node": "24.14.0"
+  },
+  "tests": {
+    "sqlite_backend": 77,
+    "postgresql_backend": 77,
+    "frontend": 5,
+    "backend_lint": "passed",
+    "backend_format": "passed",
+    "frontend_lint": "passed",
+    "frontend_format": "passed",
+    "production_build": "passed"
+  },
+  "services": [
+    {
+      "Service": "grafana",
+      "State": "running",
+      "Health": "healthy"
+    },
+    {
+      "Service": "otel-collector",
+      "State": "running",
+      "Health": ""
+    },
+    {
+      "Service": "phoenix",
+      "State": "running",
+      "Health": "healthy"
+    },
+    {
+      "Service": "postgres",
+      "State": "running",
+      "Health": "healthy"
+    },
+    {
+      "Service": "prometheus",
+      "State": "running",
+      "Health": "healthy"
+    },
+    {
+      "Service": "tracequota-api",
+      "State": "running",
+      "Health": "healthy"
+    },
+    {
+      "Service": "tracequota-web",
+      "State": "running",
+      "Health": "healthy"
+    }
+  ],
+  "collector_health": "doctor passed",
+  "application_health": {
+    "status": "healthy",
+    "version": "0.2.0"
+  },
+  "pipeline": {
+    "smoke": "passed",
+    "grafana_panels": 34,
+    "dashboard_sql_combinations": 99,
+    "catalog_providers": 3,
+    "catalog_rules": 43,
+    "demo_tasks": 25,
+    "demo_model_calls": 75,
+    "demo_quota_snapshots": 52,
+    "generic_otlp": "accepted; unknown usage/pricing remains unknown"
+  },
+  "fresh_install": {
+    "source": "authenticated GitHub clone",
+    "environment_file_required": false,
+    "new_isolated_volumes": 4,
+    "startup": "passed",
+    "doctor": "passed",
+    "demo": "passed",
+    "smoke": "passed",
+    "ui": "verified in browser",
+    "restart_persistence": "passed",
+    "postgres_backup": "passed",
+    "restore_into_disposable_database": "passed",
+    "persisted_counts": {
+      "tasks": 26,
+      "model_calls": 76,
+      "quota_snapshots": 52,
+      "schema": "0004"
+    }
+  },
+  "secret_scan": {
+    "tool": "Gitleaks 8.30.1",
+    "publication_files_findings": 0,
+    "initial_history_findings": 0,
+    "final_history_scan": "passed; zero findings"
+  },
+  "dependency_audits": {
+    "pip_audit": "no known vulnerabilities",
+    "npm_audit": "no known vulnerabilities"
+  },
+  "github": {
+    "readme_html": "verified",
+    "license_detection": "Apache-2.0",
+    "contributing_detection": "verified",
+    "security_policy_file": "verified",
+    "ci": {
+      "status": "success",
+      "run": "https://github.com/ruanpato/tracequota/actions/runs/36557703266",
+      "commit": "ad6afb9b349b0661bea3b7275deb7fbdfd746ffa",
+      "jobs_passed": 8,
+      "portable_platforms": [
+        "ubuntu-latest",
+        "macos-14",
+        "windows-latest"
+      ],
+      "image_platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "includes": [
+        "postgres",
+        "compose",
+        "dependency-security",
+        "images-api",
+        "images-web"
+      ]
+    }
+  },
+  "access": {
+    "requested_user": "otaviopato",
+    "requested_permission": "pull",
+    "github_result": "HTTP 422: cannot assign read permission",
+    "invitation_created": false,
+    "resolution": "owner will configure manually"
+  },
+  "limitations": [
+    "Authenticated native coding-client sessions not invoked or certified",
+    "Windows/macOS Docker Desktop runtime acceptance not executed locally",
+    "Synthetic acceptance is separate from native client/version compatibility"
+  ],
+  "documentation": {
+    "markdown_files": 37,
+    "local_links": 120,
+    "external_targets": 31,
+    "public_urls_reachable": 25,
+    "local_or_private_targets_verified_separately": 6
+  }
+}
