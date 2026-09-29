@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2026 Ruan Pato
 
-FROM node:24.14.0-alpine AS build
+FROM node:26.10.0-alpine AS build
 WORKDIR /app
 COPY apps/web/package*.json ./
 RUN npm ci
