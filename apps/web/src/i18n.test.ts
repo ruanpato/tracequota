@@ -32,6 +32,9 @@ describe("language catalogs and accounting semantics", () => {
     expect(t("provider-defined label", {}, "pt-BR")).toBe(
       "provider-defined label",
     );
+    for (const label of ["constructor", "__proto__", "toString"]) {
+      expect(t(label, {}, "pt-BR")).toBe(label);
+    }
     expect(supportedLocale("fr-FR")).toBe("en-US");
   });
   it("localizes dates and amounts while retaining USD, UTC and unknown-versus-zero", () => {

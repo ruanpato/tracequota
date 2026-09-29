@@ -35,7 +35,13 @@ export function t(
   values: Record<string, string | number> = {},
   locale: Locale = getLocale(),
 ): string {
-  const message = catalogs[locale][key] ?? catalogs["en-US"][key] ?? key;
+  const localized = Object.hasOwn(catalogs[locale], key)
+    ? catalogs[locale][key]
+    : undefined;
+  const fallback = Object.hasOwn(catalogs["en-US"], key)
+    ? catalogs["en-US"][key]
+    : undefined;
+  const message = localized ?? fallback ?? key;
   const template =
     typeof message === "string"
       ? message
