@@ -8,7 +8,7 @@ RUN npm ci
 COPY apps/web ./
 RUN npm run build
 
-FROM nginxinc/nginx-unprivileged:1.28.0-alpine
+FROM nginxinc/nginx-unprivileged:1.31.5-alpine
 LABEL org.opencontainers.image.title="TraceQuota web" \
       org.opencontainers.image.description="Local-first observability and quota intelligence for AI coding agents" \
       org.opencontainers.image.source="https://github.com/ruanpato/tracequota" \
