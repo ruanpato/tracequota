@@ -1,6 +1,6 @@
 # Claude Code onboarding
 
-Sources and version notes: [monitoring](https://code.claude.com/docs/en/monitoring-usage), [hooks](https://code.claude.com/docs/en/hooks), [status line](https://code.claude.com/docs/en/statusline), [Desktop](https://code.claude.com/docs/en/desktop). Researched 2026-09-28. These are documentation-backed instructions; live provider execution is not claimed as verified. No Claude installation/auth configuration is modified by TraceQuota.
+Sources and version notes: [monitoring](https://code.claude.com/docs/en/monitoring-usage), [hooks](https://code.claude.com/docs/en/hooks), [status line](https://code.claude.com/docs/en/statusline), [Desktop](https://code.claude.com/docs/en/desktop). Researched 2026-09-28. These are documentation-backed instructions; live provider execution is not claimed as verified. Core container startup does not modify Claude settings. The [optional local helper](agent-setup.md) can merge user telemetry settings with private backups; it preserves authentication and permissions.
 
 ## CLI — macOS and Linux
 
@@ -10,6 +10,8 @@ Start the backend: `docker compose up -d`. In the terminal where you run Claude:
 export CLAUDE_CODE_ENABLE_TELEMETRY=1
 export OTEL_METRICS_EXPORTER=otlp
 export OTEL_LOGS_EXPORTER=otlp
+export CLAUDE_CODE_ENHANCED_TELEMETRY_BETA=1
+export OTEL_TRACES_EXPORTER=otlp
 export OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 export OTEL_METRICS_INCLUDE_ACCOUNT_UUID=false

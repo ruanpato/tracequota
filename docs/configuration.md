@@ -62,3 +62,11 @@ Builds use locked dependencies. API startup migrates and synchronizes bundled pr
 Use Settings or the [pricing CLI](../pricing/README.md). Invalid catalogs fail before import. Status exposes bundled/database hashes and sync state. Change models/aliases/dimensions/dated rates through the [pricing contribution workflow](pricing/contributing.md).
 
 Client examples are opt-in fragments to merge into existing host settings. Keep client identity separate from provider/billing platform, content logging disabled and unknown usage nullable. See [client guides](README.md#client-guides).
+
+## Compatible dependency upgrades
+
+The application uses Node 24 LTS, Python 3.14 containers and PostgreSQL 17. Dependabot groups related changes and retains the Node LTS line and PostgreSQL major version. Keep PostgreSQL on current 17.x patch images; upgrading to 18 requires an explicit database/volume migration. Never attach an initialized 17 volume directly to a new major-version image. Back up all persisted services before upgrading Phoenix/Grafana as their schemas can change.
+
+The interface language selector persists only in browser storage (`tracequota-locale`). It changes presentation, not ledger identifiers, pricing rules, USD amounts or UTC time boundaries. Client user settings and their private backups stay outside Git.
+
+Phoenix's optional agent assistant and MCP server are disabled by default. TraceQuota uses its sanitized trace ingestion and inspection interface, without a model-execution service. These settings follow the [upstream Phoenix configuration](https://github.com/Arize-ai/phoenix/blob/main/src/phoenix/config.py).

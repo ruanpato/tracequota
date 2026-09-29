@@ -14,7 +14,7 @@ x-api: &api
     TRACEQUOTA_PRICING_SYNC: ${TRACEQUOTA_PRICING_SYNC:-true}
 services:
   postgres:
-    image: postgres:17.6-alpine
+    image: postgres:17.11-alpine
     environment:
       POSTGRES_DB: tracequota
       POSTGRES_USER: tracequota
@@ -59,9 +59,12 @@ services:
       retries: 10
     restart: unless-stopped
   phoenix:
-    image: arizephoenix/phoenix:13.15.0
+    image: arizephoenix/phoenix:20.16.0
     environment:
       PHOENIX_WORKING_DIR: /data
+      # TraceQuota uses Phoenix for sanitized traces, not model execution.
+      PHOENIX_DISABLE_AGENT_ASSISTANT: 'true'
+      PHOENIX_ENABLE_MCP_SERVER: 'false'
     volumes: [phoenix-data:/data]
     ports: ['127.0.0.1:${PHOENIX_PORT:-6006}:6006']
     healthcheck:
@@ -86,7 +89,7 @@ services:
     # Distroless upstream image has no shell or HTTP probe executable.
     # Health extension is checked from the containerized doctor/smoke test.
   prometheus:
-    image: prom/prometheus:v3.5.0
+    image: prom/prometheus:v3.15.0
     command: [--config.file=/etc/prometheus/prometheus.yml, --storage.tsdb.path=/prometheus]
     volumes:
       - ./infrastructure/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
@@ -99,7 +102,7 @@ services:
       retries: 10
     restart: unless-stopped
   grafana:
-    image: grafana/grafana:12.3.0
+    image: grafana/grafana:13.2.3
     environment:
       GF_SECURITY_ADMIN_USER: local
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-tracequota-local}

@@ -14,6 +14,7 @@ import {
   formatDateTime,
 } from "./types";
 import "./style.css";
+import { t as tr, getLocale, setPreferredLocale, type Locale } from "./i18n";
 const pages = [
   "Overview",
   "Tasks",
@@ -54,8 +55,8 @@ async function api<T>(path: string, init?: RequestInit): Promise<T> {
     const data = await r.json().catch(() => ({ detail: r.statusText }));
     throw new Error(
       typeof data.detail === "string"
-        ? data.detail
-        : "Check the entered values and try again.",
+        ? tr(data.detail)
+        : tr("Check the entered values and try again."),
     );
   }
   return r.json();
@@ -70,6 +71,10 @@ function Badge({
   return <span className={"badge " + tone}>{children}</span>;
 }
 function App() {
+  const [locale, setLocale] = useState<Locale>(getLocale);
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
   const [page, setPage] = useState("Overview"),
     [mode, setMode] = useState(
       localStorage.getItem("tracequota-mode") || "all",
@@ -153,7 +158,7 @@ function App() {
     phoenix: "http://localhost:6006",
   };
   const filtered = tasks.filter((t) => matchesSearch(t, search));
-  const date = new Intl.DateTimeFormat("en-US", {
+  const date = new Intl.DateTimeFormat(locale, {
     month: "short",
     day: "numeric",
     year: "numeric",
@@ -164,10 +169,10 @@ function App() {
         <a className="brand" href="#" onClick={() => setPage("Overview")}>
           <span className="brand-mark">↗</span>
           <span>
-            TraceQuota<small>AGENT OBSERVABILITY</small>
+            TraceQuota<small>{tr("AGENT OBSERVABILITY")}</small>
           </span>
         </a>
-        <div className="workspace-label">YOUR WORKSPACE</div>
+        <div className="workspace-label">{tr("YOUR WORKSPACE")}</div>
         <nav>
           {pages.map((p, i) => (
             <button
@@ -179,7 +184,7 @@ function App() {
               }}
             >
               <Icon index={i} />
-              {p}
+              {tr(p)}
               {p === "Tasks" && (
                 <span className="nav-count">{tasks.length}</span>
               )}
@@ -189,36 +194,48 @@ function App() {
         <div className="sidebar-bottom">
           <div className="local">
             <span className="dot" />
-            Local-first by design
+            {tr("Local-first by design")}
           </div>
           <p>
-            Your telemetry stays
+            {tr("Your telemetry stays")}
             <br />
-            on your machine.
+            {tr("on your machine.")}
           </p>
           <div className="sidebar-version">
-            OPEN SOURCE <span>v0.2.0</span>
+            {tr("OPEN SOURCE")} <span>v0.2.0</span>
           </div>
         </div>
       </aside>
       <div className="shell">
         <header>
           <div className="breadcrumb">
-            Workspace <span>/</span> <b>{page}</b>
+            {tr("Workspace")} <span>/</span> <b>{tr(page)}</b>
           </div>
           <div className="header-right">
+            <select
+              aria-label={tr("Language")}
+              value={locale}
+              onChange={(e) => {
+                const next = e.target.value as Locale;
+                setPreferredLocale(next);
+                setLocale(next);
+              }}
+            >
+              <option value="en-US">English (US)</option>
+              <option value="pt-BR">Português (Brasil)</option>
+            </select>
             <span className="date">{date}</span>
             <select
-              aria-label="Data source"
+              aria-label={tr("Data source")}
               value={mode}
               onChange={(e) => {
                 setMode(e.target.value);
                 localStorage.setItem("tracequota-mode", e.target.value);
               }}
             >
-              <option value="all">All local data</option>
-              <option value="live">Live data</option>
-              <option value="demo">Demo data</option>
+              <option value="all">{tr("All local data")}</option>
+              <option value="live">{tr("Live data")}</option>
+              <option value="demo">{tr("Demo data")}</option>
             </select>
             <span className="avatar">L</span>
           </div>
@@ -228,20 +245,26 @@ function App() {
             <div>
               <div className="eyebrow">
                 {page === "Overview"
-                  ? "YOUR AGENTS, IN FOCUS"
-                  : "LOCAL OBSERVABILITY"}
+                  ? tr("YOUR AGENTS, IN FOCUS")
+                  : tr("LOCAL OBSERVABILITY")}
               </div>
               <h1>
-                {page === "Overview" ? "Know where your context goes." : page}
+                {page === "Overview"
+                  ? tr("Know where your context goes.")
+                  : tr(page)}
               </h1>
               <p>
                 {page === "Overview"
-                  ? "A clear view of agent usage, task costs, and quota. All in one place."
+                  ? tr(
+                      "A clear view of agent usage, task costs, and quota. All in one place.",
+                    )
                   : page === "Tasks"
-                    ? "Follow the work. Understand the resource footprint."
+                    ? tr("Follow the work. Understand the resource footprint.")
                     : page === "Quota"
-                      ? "Subscription windows, with a source behind every number."
-                      : "Explore the activity in your local workspace."}
+                      ? tr(
+                          "Subscription windows, with a source behind every number.",
+                        )
+                      : tr("Explore the activity in your local workspace.")}
               </p>
             </div>
             <div className="actions">
@@ -251,7 +274,7 @@ function App() {
                 rel="noreferrer"
                 className="button"
               >
-                Grafana ↗
+                {tr("Grafana ↗")}
               </a>
               <a
                 href={links.phoenix}
@@ -259,16 +282,18 @@ function App() {
                 rel="noreferrer"
                 className="button dark"
               >
-                Open Phoenix ↗
+                {tr("Open Phoenix ↗")}
               </a>
             </div>
           </div>
           {tasks.some((t) => t.demo) && mode !== "live" && (
             <div className="demo-banner">
               <span>◈</span>
-              <b>Synthetic demo data</b>
+              <b>{tr("Synthetic demo data")}</b>
               <span>
-                Demonstration activity is labeled throughout your workspace.
+                {tr(
+                  "Demonstration activity is labeled throughout your workspace.",
+                )}
               </span>
               <button
                 onClick={() => {
@@ -276,17 +301,18 @@ function App() {
                   localStorage.setItem("tracequota-mode", "live");
                 }}
               >
-                View live data →
+                {tr("View live data →")}
               </button>
             </div>
           )}
           {["Overview", "Tasks", "Sessions", "Projects"].includes(page) && (
             <details className="card dimension-filters">
               <summary>
-                Filter usage{" "}
+                {tr("Filter usage")}{" "}
                 {Object.values(filters).filter(Boolean).length > 0 && (
                   <Badge>
-                    {Object.values(filters).filter(Boolean).length} active
+                    {Object.values(filters).filter(Boolean).length}{" "}
+                    {tr("active")}
                   </Badge>
                 )}
               </summary>
@@ -305,15 +331,15 @@ function App() {
                   "pricing_confidence",
                 ].map((key) => (
                   <label key={key}>
-                    {key.replaceAll("_", " ")}
+                    {tr(key.replaceAll("_", " "))}
                     <select
-                      aria-label={key.replaceAll("_", " ") + " filter"}
+                      aria-label={tr(key.replaceAll("_", " "))}
                       value={filters[key] || ""}
                       onChange={(e) =>
                         setFilters({ ...filters, [key]: e.target.value })
                       }
                     >
-                      <option value="">All</option>
+                      <option value="">{tr("All")}</option>
                       {(options[key] || []).map((value) => (
                         <option key={value} value={value}>
                           {value}
@@ -323,10 +349,10 @@ function App() {
                   </label>
                 ))}
                 <label>
-                  From
+                  {tr("From")}
                   <input
                     type="datetime-local"
-                    aria-label="From date filter"
+                    aria-label={tr("From date filter")}
                     value={filters.since || ""}
                     onChange={(e) =>
                       setFilters({ ...filters, since: e.target.value })
@@ -334,10 +360,10 @@ function App() {
                   />
                 </label>
                 <label>
-                  Through
+                  {tr("Through")}
                   <input
                     type="datetime-local"
-                    aria-label="Through date filter"
+                    aria-label={tr("Through date filter")}
                     value={filters.until || ""}
                     onChange={(e) =>
                       setFilters({ ...filters, until: e.target.value })
@@ -351,7 +377,7 @@ function App() {
                     setSince("");
                   }}
                 >
-                  Clear filters
+                  {tr("Clear filters")}
                 </button>
               </div>
             </details>
@@ -359,38 +385,42 @@ function App() {
           {error && (
             <div className="error" role="alert">
               {error}
-              <button onClick={() => void load()}>Retry</button>
+              <button onClick={() => void load()}>{tr("Retry")}</button>
             </div>
           )}
           {loading && !overview ? (
-            <div className="empty">Connecting to your local ledger…</div>
+            <div className="empty">
+              {tr("Connecting to your local ledger…")}
+            </div>
           ) : (
             <>
               {page === "Overview" && overview && (
                 <>
                   <div className="stat-grid">
                     <Stat
-                      label="Token activity today"
+                      label={tr("Token activity today")}
                       value={compact(overview.tokens_today)}
-                      hint="Known input + output + cache · UTC"
+                      hint={tr("Known input + output + cache · UTC")}
                       icon="↗"
                     />
                     <Stat
-                      label="Token activity this week"
+                      label={tr("Token activity this week")}
                       value={compact(overview.tokens_week)}
-                      hint="Week starts Monday · UTC"
+                      hint={tr("Week starts Monday · UTC")}
                       icon="◴"
                     />
                     <Stat
-                      label="Tasks today"
+                      label={tr("Tasks today")}
                       value={num(overview.tasks_today)}
-                      hint="Explicit tasks & interactions"
+                      hint={tr("Explicit tasks & interactions")}
                       icon="≡"
                     />
                     <Stat
-                      label="Observed sessions"
+                      label={tr("Observed sessions")}
                       value={num(overview.sessions)}
-                      hint={`${overview.projects} projects in your ledger`}
+                      hint={tr("{count} projects in your ledger", {
+                        count: overview.projects,
+                      })}
                       icon="▣"
                     />
                   </div>
@@ -398,8 +428,8 @@ function App() {
                   <div className="overview-grid">
                     <section className="card usage-card">
                       <CardTitle
-                        title="Where the tokens go"
-                        detail="Calculated from observed requests"
+                        title={tr("Where the tokens go")}
+                        detail={tr("Calculated from observed requests")}
                       />
                       <div className="token-viz">
                         {Object.entries(overview.models).length ? (
@@ -411,7 +441,7 @@ function App() {
                                   0,
                                 ),
                               )}
-                              <span>total token activity</span>
+                              <span>{tr("total token activity")}</span>
                             </div>
                             <div className="stacked-bar">
                               {[
@@ -440,7 +470,7 @@ function App() {
                                         "#e3b86d",
                                       ][i],
                                     }}
-                                    title={`${k}: ${num(n)}`}
+                                    title={`${tr(k.replaceAll("_", " "))}: ${num(n)}`}
                                   />
                                 );
                               })}
@@ -463,7 +493,7 @@ function App() {
                                       ][i],
                                     }}
                                   />
-                                  {label}
+                                  {tr(label)}
                                   <b>
                                     {compact(
                                       tasks.reduce(
@@ -490,31 +520,32 @@ function App() {
                         )}
                       </div>
                       <p className="footnote">
-                        Cache reads represent reused context. API-equivalent
-                        cost is an estimate.
+                        {tr(
+                          "Cache reads represent reused context. API-equivalent cost is an estimate.",
+                        )}
                       </p>
                     </section>
                     <section className="card">
                       <CardTitle
-                        title="Last-known provider quota"
-                        detail="Snapshot evidence"
+                        title={tr("Last-known provider quota")}
+                        detail={tr("Snapshot evidence")}
                         action={() => setPage("Quota")}
                       />
                       <QuotaCards snapshots={quota} compactMode />
                     </section>
                   </div>
                   <div className="breakdown-grid">
-                    <Breakdown title="By model" data={overview.models} />
-                    <Breakdown title="By agent" data={overview.agents} />
+                    <Breakdown title={tr("By model")} data={overview.models} />
+                    <Breakdown title={tr("By agent")} data={overview.agents} />
                     <Breakdown
-                      title="By project"
+                      title={tr("By project")}
                       data={overview.project_usage}
                     />
                   </div>
                   <section className="card">
                     <CardTitle
-                      title="Recent work"
-                      detail="Your latest tasks and interactions"
+                      title={tr("Recent work")}
+                      detail={tr("Your latest tasks and interactions")}
                       action={() => setPage("Tasks")}
                     />
                     <TaskTable tasks={overview.tasks} onSelect={openTask} />
@@ -525,29 +556,29 @@ function App() {
                 <section className="card">
                   <div className="table-controls">
                     <input
-                      aria-label="Search tasks"
-                      placeholder="Search projects, models, agents…"
+                      aria-label={tr("Search tasks")}
+                      placeholder={tr("Search projects, models, agents…")}
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
                     />
                     <select
-                      aria-label="Task status"
+                      aria-label={tr("Task status")}
                       value={status}
                       onChange={(e) => setStatus(e.target.value)}
                     >
-                      <option value="">All statuses</option>
-                      <option value="completed">Completed</option>
-                      <option value="failed">Failed</option>
-                      <option value="running">Running</option>
+                      <option value="">{tr("All statuses")}</option>
+                      <option value="completed">{tr("Completed")}</option>
+                      <option value="failed">{tr("Failed")}</option>
+                      <option value="running">{tr("Running")}</option>
                     </select>
                     <input
                       type="date"
-                      aria-label="Tasks since"
+                      aria-label={tr("Tasks since")}
                       value={since}
                       onChange={(e) => setSince(e.target.value)}
                     />
                     <select
-                      aria-label="Sort tasks"
+                      aria-label={tr("Sort tasks")}
                       value={sort}
                       onChange={(e) => setSort(e.target.value)}
                     >
@@ -574,34 +605,37 @@ function App() {
                   <div className="overview-grid">
                     <QuotaForm onSaved={() => void load()} />
                     <section className="card note">
-                      <h2>Evidence, before estimates.</h2>
+                      <h2>{tr("Evidence, before estimates.")}</h2>
                       <p>
-                        Official snapshots come from Claude’s documented
-                        status-line payload. Manual snapshots are entered by
-                        you. Estimated quota uses an explicit capacity you
-                        provide.
+                        {tr(
+                          "Official snapshots come from Claude’s documented status-line payload. Manual snapshots are entered by you. Estimated quota uses an explicit capacity you provide.",
+                        )}
                       </p>
                       <p>
-                        A task’s delta is measured in <b>percentage points</b>.
-                        A reset crossing has no single delta. Other sessions can
-                        contribute to account-wide changes.
+                        {tr("A task’s delta is measured in")}{" "}
+                        <b>{tr("percentage points")}</b>
+                        {tr(
+                          ". A reset crossing has no single delta. Other sessions can contribute to account-wide changes.",
+                        )}
                       </p>
-                      <Badge tone="purple">No credential scraping</Badge>
+                      <Badge tone="purple">
+                        {tr("No credential scraping")}
+                      </Badge>
                     </section>
                   </div>
                   <section className="card">
                     <CardTitle
-                      title="Snapshot history"
-                      detail="Capture time · UTC"
+                      title={tr("Snapshot history")}
+                      detail={tr("Capture time · UTC")}
                     />
                     <div className="table-scroll">
                       <table>
                         <thead>
                           <tr>
-                            <th>Captured</th>
-                            <th>Account</th>
-                            <th>Source</th>
-                            <th>Windows</th>
+                            <th>{tr("Captured")}</th>
+                            <th>{tr("Account")}</th>
+                            <th>{tr("Source")}</th>
+                            <th>{tr("Windows")}</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -610,14 +644,19 @@ function App() {
                               <td>{formatDateTime(q.captured_at)}</td>
                               <td>
                                 {q.provider} / {q.account}
-                                {q.demo && <Badge>demo</Badge>}
+                                {q.demo && <Badge>{tr("demo")}</Badge>}
                               </td>
                               <td>
-                                <Badge tone="purple">{q.source}</Badge>
+                                <Badge tone="purple">
+                                  {tr(q.source.replaceAll("_", " "))}
+                                </Badge>
                               </td>
                               <td>
                                 {q.windows
-                                  .map((w) => `${w.name}: ${w.used_percent}%`)
+                                  .map(
+                                    (w) =>
+                                      `${tr(w.name)}: ${num(w.used_percent)}%`,
+                                  )
                                   .join(" · ")}
                               </td>
                             </tr>
@@ -633,19 +672,21 @@ function App() {
                 Array.isArray(extra) && (
                   <section className="card">
                     <CardTitle
-                      title={page}
-                      detail="Usage from your request ledger"
+                      title={tr(page)}
+                      detail={tr("Usage from your request ledger")}
                     />
                     <div className="table-scroll">
                       <table>
                         <thead>
                           <tr>
                             <th>
-                              {page === "Sessions" ? "Session" : "Project"}
+                              {page === "Sessions"
+                                ? tr("Session")
+                                : tr("Project")}
                             </th>
-                            <th>Tasks</th>
-                            <th>Token activity</th>
-                            <th>Details</th>
+                            <th>{tr("Tasks")}</th>
+                            <th>{tr("Token activity")}</th>
+                            <th>{tr("Details")}</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -661,7 +702,7 @@ function App() {
                                 <td>
                                   <b>{r.name || r.id}</b>
                                   <small>
-                                    {r.client_id || "Project"}
+                                    {r.client_id || tr("Project")}
                                     {r.providers?.length
                                       ? ` · ${r.providers.join(", ")}`
                                       : ""}
@@ -670,14 +711,14 @@ function App() {
                                 <td>
                                   {r.tasks}
                                   <small>
-                                    {money(r.estimated_api_equivalent_cost)} API
-                                    equivalent
+                                    {money(r.estimated_api_equivalent_cost)}{" "}
+                                    {tr("API equivalent")}
                                   </small>
                                 </td>
                                 <td>{num(r.tokens)}</td>
                                 <td>
-                                  {r.project || "Local project"}{" "}
-                                  {r.demo && <Badge>demo</Badge>}
+                                  {r.project || tr("Local project")}{" "}
+                                  {r.demo && <Badge>{tr("demo")}</Badge>}
                                   <button
                                     className="text-button"
                                     onClick={() => {
@@ -685,7 +726,7 @@ function App() {
                                       setPage("Tasks");
                                     }}
                                   >
-                                    View tasks →
+                                    {tr("View tasks →")}
                                   </button>
                                 </td>
                               </tr>
@@ -704,45 +745,58 @@ function App() {
                         <Icon index={5} size={28} />
                       </span>
                       <h2>{client.name}</h2>
-                      <p>{client.integration_type.replaceAll("_", " ")}</p>
+                      <p>{tr(client.integration_type.replaceAll("_", " "))}</p>
                       <Badge tone={client.last_seen ? "green" : "neutral"}>
                         {client.last_seen
-                          ? "Telemetry received"
+                          ? tr("Telemetry received")
                           : client.validation === "planned"
-                            ? "Planned"
-                            : "Not configured"}
+                            ? tr("Planned")
+                            : tr("Not configured")}
                       </Badge>
                       <p className="footnote">
-                        Validation: {client.validation}
-                        {client.demo_seen && " · synthetic data received"}
+                        {tr("Validation:")}{" "}
+                        {tr(client.validation.replaceAll("_", " "))}
+                        {client.demo_seen && tr(" · synthetic data received")}
                       </p>
                       <dl>
                         {Object.entries(client.capabilities).map(
                           ([name, capability]) => (
                             <React.Fragment key={name}>
-                              <dt>{name.replaceAll("_", " ")}</dt>
-                              <dd>{String(capability).replaceAll("_", " ")}</dd>
+                              <dt>{tr(name.replaceAll("_", " "))}</dt>
+                              <dd>
+                                {tr(String(capability).replaceAll("_", " "))}
+                              </dd>
                             </React.Fragment>
                           ),
                         )}
                       </dl>
+                      {client.id === "cursor" && (
+                        <p className="footnote">
+                          {tr(
+                            "Session metadata only. Tokens, costs and quota are unavailable from Cursor hooks.",
+                          )}
+                        </p>
+                      )}
+                      {client.validation !== "planned" && (
+                        <IntegrationPrompt client={client} />
+                      )}
                       {client.source && (
                         <a
                           href={client.source}
                           target="_blank"
                           rel="noreferrer"
                         >
-                          Official documentation ↗
+                          {tr("Official documentation ↗")}
                         </a>
                       )}
                     </section>
                   ))}
                   <section className="card integration">
-                    <h2>Connect Claude Code</h2>
+                    <h2>{tr("Connect Claude Code")}</h2>
                     <p>
-                      Start the stack, configure the CLI or Desktop Local
-                      environment, and run Claude normally. Your agent stays on
-                      the host.
+                      {tr(
+                        "Start the stack, configure the CLI or Desktop Local environment, and run Claude normally. Your agent stays on the host.",
+                      )}
                     </p>
                     <pre>
                       CLAUDE_CODE_ENABLE_TELEMETRY=1
@@ -752,8 +806,9 @@ function App() {
                       OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
                     </pre>
                     <p>
-                      See the repository onboarding guide for complete shell and
-                      PowerShell settings, hooks, and the quota adapter.
+                      {tr(
+                        "See the repository onboarding guide for complete shell and PowerShell settings, hooks, and the quota adapter.",
+                      )}
                     </p>
                   </section>
                 </div>
@@ -765,32 +820,33 @@ function App() {
                     onSynced={() => void load()}
                   />
                   <section className="card note">
-                    <h2>Privacy comes standard.</h2>
+                    <h2>{tr("Privacy comes standard.")}</h2>
                     <dl>
-                      <dt>Capture mode</dt>
-                      <dd>{settings.privacy_mode}</dd>
-                      <dt>Storage</dt>
-                      <dd>Local named Docker volumes</dd>
-                      <dt>Account</dt>
-                      <dd>No TraceQuota account required</dd>
-                      <dt>Retention</dt>
-                      <dd>{settings.retention}</dd>
-                      <dt>Pricing table</dt>
+                      <dt>{tr("Capture mode")}</dt>
+                      <dd>{tr(settings.privacy_mode)}</dd>
+                      <dt>{tr("Storage")}</dt>
+                      <dd>{tr("Local named Docker volumes")}</dd>
+                      <dt>{tr("Account")}</dt>
+                      <dd>{tr("No TraceQuota account required")}</dd>
+                      <dt>{tr("Retention")}</dt>
+                      <dd>{tr(settings.retention)}</dd>
+                      <dt>{tr("Pricing table")}</dt>
                       <dd>{settings.pricing_version}</dd>
-                      <dt>Time calculations</dt>
+                      <dt>{tr("Time calculations")}</dt>
                       <dd>UTC</dd>
                     </dl>
                     <p>
-                      Prompts, responses, source content, shell output and
-                      credentials are removed from the default pipeline.
+                      {tr(
+                        "Prompts, responses, source content, shell output and credentials are removed from the default pipeline.",
+                      )}
                     </p>
                   </section>
                   <section className="card note">
-                    <h2>Tools for investigation</h2>
+                    <h2>{tr("Tools for investigation")}</h2>
                     <p>
-                      Use Phoenix for execution trees and Grafana for time
-                      series. TraceQuota connects them to your local task and
-                      quota ledger.
+                      {tr(
+                        "Use Phoenix for execution trees and Grafana for time series. TraceQuota connects them to your local task and quota ledger.",
+                      )}
                     </p>
                     <a
                       className="button"
@@ -798,7 +854,7 @@ function App() {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      Open Phoenix ↗
+                      {tr("Open Phoenix ↗")}
                     </a>
                     <a
                       className="button"
@@ -806,13 +862,13 @@ function App() {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      Open Grafana ↗
+                      {tr("Open Grafana ↗")}
                     </a>
-                    <h3>Rich capture</h3>
+                    <h3>{tr("Rich capture")}</h3>
                     <p>
-                      Requires an explicit custom Collector configuration. There
-                      is no one-click switch that could accidentally retain
-                      private content.
+                      {tr(
+                        "Requires an explicit custom Collector configuration. There is no one-click switch that could accidentally retain private content.",
+                      )}
                     </p>
                   </section>
                 </div>
@@ -822,9 +878,9 @@ function App() {
           <footer>
             <span>
               <span className="dot" />
-              All data stored locally
+              {tr("All data stored locally")}
             </span>
-            <span>TraceQuota · Metadata with meaning.</span>
+            <span>{tr("TraceQuota · Metadata with meaning.")}</span>
           </footer>
         </main>
       </div>
@@ -877,7 +933,7 @@ function CardTitle({
       </div>
       {action && (
         <button onClick={action} className="text-button">
-          View all →
+          {tr("View all →")}
         </button>
       )}
     </div>
@@ -886,8 +942,8 @@ function CardTitle({
 function Empty() {
   return (
     <div className="empty">
-      <strong>Your ledger is ready.</strong>
-      <p>Run the demo or connect an agent to see activity here.</p>
+      <strong>{tr("Your ledger is ready.")}</strong>
+      <p>{tr("Run the demo or connect an agent to see activity here.")}</p>
       <code>docker compose run --rm tracequota-demo</code>
     </div>
   );
@@ -903,7 +959,7 @@ function Breakdown({
     max = Math.max(...values.map(([, v]) => v), 1);
   return (
     <section className="card breakdown">
-      <CardTitle title={title} detail="Token activity" />
+      <CardTitle title={title} detail={tr("Token activity")} />
       {values.length ? (
         values.map(([name, n], i) => (
           <div className="breakdown-row" key={name}>
@@ -923,7 +979,7 @@ function Breakdown({
           </div>
         ))
       ) : (
-        <p className="muted">No observations yet.</p>
+        <p className="muted">{tr("No observations yet.")}</p>
       )}
     </section>
   );
@@ -952,7 +1008,7 @@ function QuotaCards({
       {groups.length > 1 && (
         <select
           className="account-picker"
-          aria-label="Quota account"
+          aria-label={tr("Quota account")}
           value={chosen}
           onChange={(e) => setAccount(e.target.value)}
         >
@@ -964,7 +1020,7 @@ function QuotaCards({
       {current ? (
         current.windows.map((w) => (
           <QuotaWindow
-            key={w.name}
+            key={tr(w.name)}
             window={w}
             snapshot={current}
             compactMode={compactMode}
@@ -972,9 +1028,9 @@ function QuotaCards({
         ))
       ) : (
         <div className="empty">
-          <p>No quota snapshot yet.</p>
+          <p>{tr("No quota snapshot yet.")}</p>
           <span>
-            Record a manual snapshot or connect the status-line adapter.
+            {tr("Record a manual snapshot or connect the status-line adapter.")}
           </span>
         </div>
       )}
@@ -994,31 +1050,35 @@ function QuotaWindow({
     <section className={compactMode ? "quota-window" : "card quota-window"}>
       <div className="quota-label">
         <b>
-          {q.provider === "anthropic" ? "Claude" : q.provider} {w.name}
+          {q.provider === "anthropic" ? tr("Claude") : q.provider} {tr(w.name)}
         </b>
         <Badge tone="purple">
-          {q.source}
-          {q.demo ? " · demo" : ""}
+          {tr(q.source.replaceAll("_", " "))}
+          {q.demo ? tr(" · demo") : ""}
         </Badge>
       </div>
       <div className="quota-value">
-        <strong>{w.used_percent}%</strong>
+        <strong>{num(w.used_percent)}%</strong>
         <span>
-          used <b>{Math.round(w.remaining_percent * 10) / 10}% remaining</b>
+          {tr("used")}{" "}
+          <b>
+            {num(Math.round(w.remaining_percent * 10) / 10)}
+            {tr("% remaining")}
+          </b>
         </span>
       </div>
       <div className="quota-track">
         <span
-          style={{ width: `${w.used_percent}%` }}
+          style={{ width: `${num(w.used_percent)}%` }}
           className={w.used_percent > 80 ? "high" : ""}
         />
       </div>
       <p className="footnote">
         {w.reset_at
-          ? `Resets ${formatDateTime(w.reset_at)}`
-          : "Reset time not supplied"}
+          ? tr("Resets {date}", { date: formatDateTime(w.reset_at) })
+          : tr("Reset time not supplied")}
         <br />
-        Captured {formatDateTime(q.captured_at)}
+        {tr("Captured")} {formatDateTime(q.captured_at)}
       </p>
     </section>
   );
@@ -1037,13 +1097,13 @@ function TaskTable({
           <table>
             <thead>
               <tr>
-                <th>Task / project</th>
-                <th>Agent / model</th>
-                <th>Token activity</th>
-                <th>API equivalent</th>
-                <th>Duration</th>
-                <th>5h quota</th>
-                <th>Status</th>
+                <th>{tr("Task / project")}</th>
+                <th>{tr("Agent / model")}</th>
+                <th>{tr("Token activity")}</th>
+                <th>{tr("API equivalent")}</th>
+                <th>{tr("Duration")}</th>
+                <th>{tr("5h quota")}</th>
+                <th>{tr("Status")}</th>
               </tr>
             </thead>
             <tbody>
@@ -1061,7 +1121,7 @@ function TaskTable({
                     </button>
                     <small>
                       {t.project} · {t.client_id}{" "}
-                      {t.demo && <Badge>demo</Badge>}
+                      {t.demo && <Badge>{tr("demo")}</Badge>}
                     </small>
                   </td>
                   <td>
@@ -1074,8 +1134,11 @@ function TaskTable({
                     {money(t.estimated_api_cost)}
                     <small>
                       {t.unpriced_requests
-                        ? `${t.unpriced_requests} incomplete · ${money(t.priced_partial_cost)} priced`
-                        : "API equivalent"}
+                        ? tr("{cost} priced · {count} incomplete", {
+                            cost: money(t.priced_partial_cost),
+                            count: t.unpriced_requests,
+                          })
+                        : tr("API equivalent")}
                     </small>
                   </td>
                   <td>{duration(t.duration_seconds)}</td>
@@ -1095,7 +1158,7 @@ function TaskTable({
                       }
                     >
                       <span className="tiny-dot" />
-                      {t.status}
+                      {tr(t.status)}
                     </Badge>
                   </td>
                 </tr>
@@ -1160,7 +1223,7 @@ function QuotaForm({ onSaved }: { onSaved: () => void }) {
           }),
         });
       }
-      setNotice("Snapshot saved locally.");
+      setNotice(tr("Snapshot saved locally."));
       onSaved();
     } catch (e) {
       setNotice(String(e));
@@ -1170,13 +1233,15 @@ function QuotaForm({ onSaved }: { onSaved: () => void }) {
   }
   return (
     <form className="card quota-form" onSubmit={submit}>
-      <h2>Record a snapshot</h2>
-      <p>Enter the quota shown by your provider, or an explicit estimate.</p>
+      <h2>{tr("Record a snapshot")}</h2>
+      <p>
+        {tr("Enter the quota shown by your provider, or an explicit estimate.")}
+      </p>
       <div className="form-grid">
         <label>
-          Provider
+          {tr("Provider")}
           <input
-            aria-label="Quota provider"
+            aria-label={tr("Quota provider")}
             value={provider}
             onChange={(e) => setProvider(e.target.value)}
             maxLength={80}
@@ -1184,7 +1249,7 @@ function QuotaForm({ onSaved }: { onSaved: () => void }) {
           />
         </label>
         <label>
-          Account
+          {tr("Account")}
           <input
             value={account}
             onChange={(e) => setAccount(e.target.value)}
@@ -1192,14 +1257,14 @@ function QuotaForm({ onSaved }: { onSaved: () => void }) {
           />
         </label>
         <label>
-          Evidence source
+          {tr("Evidence source")}
           <select value={source} onChange={(e) => setSource(e.target.value)}>
-            <option value="manual">Manual</option>
-            <option value="estimated">Estimated</option>
+            <option value="manual">{tr("Manual")}</option>
+            <option value="estimated">{tr("Estimated")}</option>
           </select>
         </label>
         <label>
-          {source === "manual" ? "5h used (%)" : "Used units"}
+          {source === "manual" ? tr("5h used (%)") : tr("Used units")}
           <input
             type="number"
             min="0"
@@ -1212,7 +1277,7 @@ function QuotaForm({ onSaved }: { onSaved: () => void }) {
         </label>
         {source === "manual" ? (
           <label>
-            Weekly used (%) · optional
+            {tr("Weekly used (%) · optional")}
             <input
               type="number"
               min="0"
@@ -1224,7 +1289,7 @@ function QuotaForm({ onSaved }: { onSaved: () => void }) {
           </label>
         ) : (
           <label>
-            Your assumed capacity
+            {tr("Your assumed capacity")}
             <input
               type="number"
               min="0.001"
@@ -1237,7 +1302,7 @@ function QuotaForm({ onSaved }: { onSaved: () => void }) {
         )}
         {source === "manual" && (
           <label className="full">
-            5h reset · optional
+            {tr("5h reset · optional")}
             <input
               type="datetime-local"
               value={reset}
@@ -1247,7 +1312,7 @@ function QuotaForm({ onSaved }: { onSaved: () => void }) {
         )}
       </div>
       <button className="button dark" disabled={saving}>
-        {saving ? "Saving…" : "Save snapshot"}
+        {saving ? tr("Saving…") : tr("Save snapshot")}
       </button>
       {notice && <p role="status">{notice}</p>}
     </form>
@@ -1275,105 +1340,114 @@ function TaskDetail({
         className="detail"
         role="dialog"
         aria-modal="true"
-        aria-label="Task detail"
+        aria-label={tr("Task detail")}
         onClick={(e) => e.stopPropagation()}
       >
         <button
           className="close"
           onClick={onClose}
-          aria-label="Close task detail"
+          aria-label={tr("Close task detail")}
         >
           ×
         </button>
         <div className="eyebrow">
-          TASK INVESTIGATION {t.demo && "· SYNTHETIC DEMO"}
+          {tr("TASK INVESTIGATION")} {t.demo && tr("· SYNTHETIC DEMO")}
         </div>
         <h1>{t.title}</h1>
         <p>
           {t.project}{" "}
-          <span className="muted">/ {t.kind.replace("_", " ")}</span>
+          <span className="muted">/ {tr(t.kind.replaceAll("_", " "))}</span>
         </p>
-        <Badge tone={t.status === "failed" ? "red" : "green"}>{t.status}</Badge>
+        <Badge tone={t.status === "failed" ? "red" : "green"}>
+          {tr(t.status)}
+        </Badge>
         <div className="detail-stats">
           <Stat
-            label="Known token activity"
+            label={tr("Known token activity")}
             value={compact(t.total_token_activity)}
-            hint={`${t.llm_calls} LLM calls · ${t.tool_calls} tool calls`}
+            hint={tr("{models} model calls · {tools} tool calls", {
+              models: t.llm_calls,
+              tools: t.tool_calls,
+            })}
             icon="↗"
           />
           <Stat
-            label="API-equivalent cost"
+            label={tr("API-equivalent cost")}
             value={money(t.estimated_api_cost)}
-            hint="API workload value · subscription bill unknown"
+            hint={tr("API workload value · subscription bill unknown")}
             icon="$"
           />
           <Stat
-            label="Duration"
+            label={tr("Duration")}
             value={duration(t.duration_seconds)}
             hint={t.source_surface}
             icon="◴"
           />
         </div>
         <section className="card note">
-          <h2>Execution and billing</h2>
+          <h2>{tr("Execution and billing")}</h2>
           <p>
-            {t.client_id} · {t.surface || "unknown surface"} ·{" "}
-            {t.runtime || "unknown runtime"} ·{" "}
-            {t.integration_type || "unknown integration"}
+            {t.client_id} · {tr(t.surface || "unknown surface")} ·{" "}
+            {tr(t.runtime || "unknown runtime")} ·{" "}
+            {tr(t.integration_type || "unknown integration")}
           </p>
           <p>
-            Providers: {t.providers.join(", ") || t.provider}. API-equivalent
-            estimate: {money(t.estimated_api_cost)}. Provider-reported cost:{" "}
-            {money(t.observed_provider_cost)}. Subscription bill: unknown.
+            {tr("Providers:")} {t.providers.join(", ") || t.provider}
+            {tr(". API-equivalent estimate:")} {money(t.estimated_api_cost)}
+            {tr(". Provider-reported cost:")} {money(t.observed_provider_cost)}
+            {tr(". Subscription bill: unknown.")}
           </p>
           {t.unpriced_requests > 0 && (
             <p>
-              {t.unpriced_requests} calls have incomplete pricing. Known
-              components: {money(t.priced_partial_cost)}.
+              {t.unpriced_requests}{" "}
+              {tr("calls have incomplete pricing. Known components:")}{" "}
+              {money(t.priced_partial_cost)}.
             </p>
           )}
           <dl>
             {Object.entries(t.usage).map(([name, usage]) => (
               <React.Fragment key={name}>
-                <dt>{name.replaceAll("_", " ")}</dt>
+                <dt>{tr(name.replaceAll("_", " "))}</dt>
                 <dd>
-                  {usage.total == null ? "Unknown" : num(usage.total)}
+                  {usage.total == null ? tr("Unknown") : num(usage.total)}
                   {usage.unknown_calls > 0 &&
-                    ` · missing in ${usage.unknown_calls} calls`}
+                    tr(" · missing in {count} calls", {
+                      count: usage.unknown_calls,
+                    })}
                 </dd>
               </React.Fragment>
             ))}
           </dl>
         </section>
-        <h2>Provider quota evidence</h2>
+        <h2>{tr("Provider quota evidence")}</h2>
         {t.quota_by_provider.map((q) => (
           <p key={q.provider + q.account}>
             {q.provider} / {q.account}:{" "}
             {q.delta.length
               ? q.delta.map((d) => `${d.name}: ${deltaLabel(d)}`).join(" · ")
-              : "No matching quota snapshots"}
+              : tr("No matching quota snapshots")}
           </p>
         ))}
-        <h2>Model-call pricing provenance</h2>
+        <h2>{tr("Model-call pricing provenance")}</h2>
         {t.events
           ?.filter((e) => e.kind === "llm")
           .map((e) => (
             <details className="card pricing-call" key={e.id}>
               <summary>
                 {e.provider} / {e.model} ·{" "}
-                {e.pricing?.confidence || "legacy / unknown"} ·{" "}
+                {tr(e.pricing?.confidence || "legacy / unknown")} ·{" "}
                 {money(e.pricing?.total ?? e.pricing?.usd)}
               </summary>
               <p>
-                Rule:{" "}
+                {tr("Rule:")}{" "}
                 {e.pricing?.pricing_rule_id ||
-                  "Historical estimate / unavailable"}
+                  tr("Historical estimate / unavailable")}
               </p>
               <p className="hash">
-                Catalog:{" "}
+                {tr("Catalog:")}{" "}
                 {e.pricing?.catalog_version ||
                   e.pricing?.version ||
-                  "Unavailable"}
+                  tr("Unavailable")}
               </p>
               {(e.pricing?.components || []).map((c: any) => (
                 <p key={c.metric}>
@@ -1385,27 +1459,27 @@ function TaskDetail({
                 ...(e.pricing?.warnings || []),
                 ...(e.pricing?.notes || []),
               ].map((message: string, index: number) => (
-                <p key={index}>{message}</p>
+                <p key={index}>{tr(message)}</p>
               ))}
               {e.pricing?.source?.url && (
                 <a href={e.pricing.source.url} target="_blank" rel="noreferrer">
-                  Official pricing source ↗
+                  {tr("Official pricing source ↗")}
                 </a>
               )}
             </details>
           ))}
-        <h2>Token breakdown</h2>
+        <h2>{tr("Token breakdown")}</h2>
         <div className="detail-tokens">
           {Object.entries(t.tokens).map(([k, v]) => (
             <div key={k}>
-              <span>{k.replace("_", " ")}</span>
+              <span>{tr(k.replaceAll("_", " "))}</span>
               <b>{num(v)}</b>
             </div>
           ))}
         </div>
         <div className="detail-grid">
           <Breakdown
-            title="Agent / subagent usage"
+            title={tr("Agent / subagent usage")}
             data={Object.fromEntries(
               Object.entries(t.agents).map(([k, v]) => [
                 k,
@@ -1414,7 +1488,7 @@ function TaskDetail({
             )}
           />
           <Breakdown
-            title="Model usage"
+            title={tr("Model usage")}
             data={Object.fromEntries(
               Object.entries(t.models).map(([k, v]) => [
                 k,
@@ -1423,13 +1497,13 @@ function TaskDetail({
             )}
           />
         </div>
-        <h2>Primary provider quota before → after</h2>
+        <h2>{tr("Primary provider quota before → after")}</h2>
         {t.quota_delta.length ? (
           t.quota_delta.map((d) => (
             <div className="delta-row" key={d.name}>
               <b>{d.name}</b>
               <span>
-                {d.before}% → {d.after}%
+                {num(d.before)}% → {num(d.after)}%
               </span>
               <strong>{deltaLabel(d)}</strong>
               <Badge>
@@ -1438,35 +1512,40 @@ function TaskDetail({
             </div>
           ))
         ) : (
-          <p className="muted">No matching snapshots bracketing this task.</p>
+          <p className="muted">
+            {tr("No matching snapshots bracketing this task.")}
+          </p>
         )}
         <p className="footnote">
-          Account window change. Concurrent work can contribute; resets cannot
-          produce a reliable single delta.
+          {tr(
+            "Account window change. Concurrent work can contribute; resets cannot produce a reliable single delta.",
+          )}
         </p>
-        <h2>Context</h2>
+        <h2>{tr("Context")}</h2>
         <dl>
-          <dt>Session</dt>
+          <dt>{tr("Session")}</dt>
           <dd>{t.session_id}</dd>
-          <dt>Repository</dt>
-          <dd>{t.repository || "Not supplied"}</dd>
-          <dt>Branch</dt>
-          <dd>{t.git_branch || "Not supplied / detached HEAD"}</dd>
-          <dt>Start commit</dt>
-          <dd>{t.git_commit_start || "Not supplied"}</dd>
-          <dt>End commit</dt>
-          <dd>{t.git_commit_end || "Not supplied"}</dd>
-          <dt>Started</dt>
+          <dt>{tr("Repository")}</dt>
+          <dd>{t.repository || tr("Not supplied")}</dd>
+          <dt>{tr("Branch")}</dt>
+          <dd>{t.git_branch || tr("Not supplied / detached HEAD")}</dd>
+          <dt>{tr("Start commit")}</dt>
+          <dd>{t.git_commit_start || tr("Not supplied")}</dd>
+          <dt>{tr("End commit")}</dt>
+          <dd>{t.git_commit_end || tr("Not supplied")}</dd>
+          <dt>{tr("Started")}</dt>
           <dd>{formatDateTime(t.started_at)}</dd>
-          <dt>Provider-emitted cost</dt>
+          <dt>{tr("Provider-emitted cost")}</dt>
           <dd>
-            {money(t.observed_provider_cost)} · provider estimate, not a
-            subscription bill
+            {money(t.observed_provider_cost)}{" "}
+            {tr("· provider estimate, not a subscription bill")}
           </dd>
-          <dt>Pricing coverage</dt>
-          <dd>{t.unpriced_requests} unpriced requests</dd>
+          <dt>{tr("Pricing coverage")}</dt>
+          <dd>
+            {t.unpriced_requests} {tr("unpriced requests")}
+          </dd>
         </dl>
-        <h2>Deep trace investigation</h2>
+        <h2>{tr("Deep trace investigation")}</h2>
         {t.phoenix_trace_ids.length ? (
           t.phoenix_trace_ids.map((id) => (
             <div className="trace-link" key={id}>
@@ -1477,29 +1556,34 @@ function TaskDetail({
                 target="_blank"
                 rel="noreferrer"
               >
-                Find in Phoenix ↗
+                {tr("Find in Phoenix ↗")}
               </a>
             </div>
           ))
         ) : (
           <p className="muted">
-            No trace context received. Enable beta traces or send generic OTLP.
+            {tr(
+              "No trace context received. Enable beta traces or send generic OTLP.",
+            )}
           </p>
         )}
         <p className="footnote">
-          Use the trace ID to filter Phoenix. V1 avoids relying on an unstable
-          project-specific deep-link route.
+          {tr(
+            "Use the trace ID to filter Phoenix. V1 avoids relying on an unstable project-specific deep-link route.",
+          )}
         </p>
         <details>
-          <summary>Request ledger · {t.events?.length || 0} records</summary>
+          <summary>
+            {tr("Request ledger ·")} {t.events?.length || 0} {tr("records")}
+          </summary>
           <div className="table-scroll">
             <table>
               <thead>
                 <tr>
-                  <th>Kind</th>
-                  <th>Agent</th>
-                  <th>Model</th>
-                  <th>Tokens</th>
+                  <th>{tr("Kind")}</th>
+                  <th>{tr("Agent")}</th>
+                  <th>{tr("Model")}</th>
+                  <th>{tr("Tokens")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -1507,7 +1591,7 @@ function TaskDetail({
                   ?.filter((e) => e.kind === "llm" || e.kind === "tool")
                   .map((e) => (
                     <tr key={e.id}>
-                      <td>{e.kind}</td>
+                      <td>{tr(e.kind)}</td>
                       <td>{e.agent}</td>
                       <td>{e.model}</td>
                       <td>
@@ -1541,7 +1625,7 @@ function PricingSettings({
     try {
       await api("/pricing/sync", { method: "POST" });
       setNotice(
-        "Bundled pricing synchronized. Stored estimates are preserved.",
+        tr("Bundled pricing synchronized. Stored estimates are preserved."),
       );
       onSynced();
     } catch (e) {
@@ -1552,35 +1636,35 @@ function PricingSettings({
   }
   return (
     <section className="card note pricing-settings">
-      <h2>Versioned pricing registry</h2>
+      <h2>{tr("Versioned pricing registry")}</h2>
       <Badge tone={status?.in_sync ? "green" : "neutral"}>
-        {status?.in_sync ? "Synchronized" : "Sync needed"}
+        {status?.in_sync ? tr("Synchronized") : tr("Sync needed")}
       </Badge>
       <p>
-        {status?.providers} providers · {status?.models} models ·{" "}
-        {status?.rules} pricing rules
+        {status?.providers} {tr("providers ·")} {status?.models}{" "}
+        {tr("models ·")} {status?.rules} {tr("pricing rules")}
       </p>
       <dl>
-        <dt>Bundled catalog</dt>
+        <dt>{tr("Bundled catalog")}</dt>
         <dd className="hash">{status?.bundled_hash}</dd>
-        <dt>Active database catalog</dt>
-        <dd className="hash">{status?.database_hash || "Not imported"}</dd>
-        <dt>Last sync</dt>
+        <dt>{tr("Active database catalog")}</dt>
+        <dd className="hash">{status?.database_hash || tr("Not imported")}</dd>
+        <dt>{tr("Last sync")}</dt>
         <dd>
-          {status?.last_sync ? formatDateTime(status.last_sync) : "Never"}
+          {status?.last_sync ? formatDateTime(status.last_sync) : tr("Never")}
         </dd>
       </dl>
       <p>
-        New calls use the active catalog. Each estimate keeps its original rule,
-        catalog and component costs. Sync imports the registry shipped with this
-        release.
+        {tr(
+          "New calls use the active catalog. Each estimate keeps its original rule, catalog and component costs. Sync imports the registry shipped with this release.",
+        )}
       </p>
       <button
         className="button dark"
         disabled={busy}
         onClick={() => void syncPricing()}
       >
-        {busy ? "Synchronizing…" : "Sync bundled pricing"}
+        {busy ? tr("Synchronizing…") : tr("Sync bundled pricing")}
       </button>
       {notice && <p role="status">{notice}</p>}
     </section>
@@ -1597,49 +1681,69 @@ function CostOverview({ overview: o }: { overview: Overview }) {
         ].map(([name, cost]) => (
           <Stat
             key={String(name)}
-            label={String(name)}
+            label={tr(String(name))}
             value={money((cost as any).estimated_api_equivalent_cost)}
             hint={
               (cost as any).unpriced_requests
-                ? `${(cost as any).unpriced_requests} incomplete · ${money((cost as any).priced_partial_cost)} priced`
-                : "Estimated workload value · USD"
+                ? (cost as any).priced_partial_cost == null
+                  ? tr("No priced estimate · {count} incomplete", {
+                      count: (cost as any).unpriced_requests,
+                    })
+                  : tr("{cost} priced · {count} incomplete", {
+                      cost: money((cost as any).priced_partial_cost),
+                      count: (cost as any).unpriced_requests,
+                    })
+                : tr("Estimated workload value · USD")
             }
             icon="$"
           />
         ))}
         <Stat
-          label="Calls with incomplete pricing"
+          label={tr("Calls with incomplete pricing")}
           value={num(o.unpriced_requests)}
-          hint="Missing telemetry or a matching price"
+          hint={tr("Missing telemetry or a matching price")}
           icon="?"
         />
       </div>
       <p className="cost-explanation">
-        API-equivalent costs describe workload value. Subscription charges and
-        incremental bills remain unknown.
+        {tr(
+          "API-equivalent costs describe workload value. Subscription charges and incremental bills remain unknown.",
+        )}
       </p>
       <div className="cost-grid">
         {["client_id", "provider", "model", "project", "agent"].map((field) => (
           <section className="card breakdown" key={field}>
             <CardTitle
-              title={`Cost by ${field === "client_id" ? "client" : field}`}
-              detail="API-equivalent USD"
+              title={tr("Cost by {dimension}", {
+                dimension: tr(field === "client_id" ? "client" : field),
+              })}
+              detail={tr("API-equivalent USD")}
             />
             {Object.entries(o.costs?.[field] || {}).map(([name, cost]) => (
               <div className="cost-row" key={name}>
                 <span>
                   {name}
                   <small>
-                    {cost.calls} calls · {compact(cost.token_activity)} known
-                    tokens
+                    {tr("{count} calls · {tokens} known tokens", {
+                      count: cost.calls,
+                      tokens: compact(cost.token_activity),
+                    })}
                   </small>
                 </span>
                 <b>
                   {money(cost.estimated_api_equivalent_cost)}
-                  <small>
-                    {cost.unpriced_requests > 0 &&
-                      `${money(cost.priced_partial_cost)} priced · ${cost.unpriced_requests} incomplete`}
-                  </small>
+                  {cost.unpriced_requests > 0 && (
+                    <small>
+                      {cost.priced_partial_cost == null
+                        ? tr("No priced estimate · {count} incomplete", {
+                            count: cost.unpriced_requests,
+                          })
+                        : tr("{cost} priced · {count} incomplete", {
+                            cost: money(cost.priced_partial_cost),
+                            count: cost.unpriced_requests,
+                          })}
+                    </small>
+                  )}
                 </b>
               </div>
             ))}
@@ -1647,28 +1751,89 @@ function CostOverview({ overview: o }: { overview: Overview }) {
         ))}
         <section className="card breakdown">
           <CardTitle
-            title="Pricing coverage"
-            detail="Confidence and cost components"
+            title={tr("Pricing coverage")}
+            detail={tr("Confidence and cost components")}
           />
           {Object.entries(o.pricing_confidence || {}).map(([name, n]) => (
             <div className="cost-row" key={name}>
-              <span>{name}</span>
-              <b>{n} calls</b>
+              <span>{tr(name)}</span>
+              <b>{tr("{count} calls", { count: Number(n) })}</b>
             </div>
           ))}
           {Object.entries(o.cost_components || {}).map(([name, cost]) => (
             <div className="cost-row" key={name}>
-              <span>{name.replaceAll("_", " ")}</span>
+              <span>{tr(name.replaceAll("_", " "))}</span>
               <b>{money(cost)}</b>
             </div>
           ))}
           {Object.entries(o.unknown_models || {}).map(([name, n]) => (
             <p key={name}>
-              {name}: {n} calls with incomplete pricing
+              {name}:{" "}
+              {tr("{count} calls with incomplete pricing", {
+                count: Number(n),
+              })}
             </p>
           ))}
         </section>
       </div>
     </>
+  );
+}
+
+function IntegrationPrompt({
+  client,
+}: {
+  client: { id: string; name: string };
+}) {
+  const [copied, setCopied] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const guide =
+    client.id === "generic_otlp"
+      ? "integrations/generic-otel/README.md"
+      : `docs/integrations/${client.id.replaceAll("_", "-")}.md`;
+  const prompt = tr(
+    "Configure {client} to send metadata to my local TraceQuota installation. Read {guide}. Verify http://127.0.0.1:8080/health and the local Docker services first. Back up existing user settings and merge the integration without changing authentication, permissions or unrelated settings. Use loopback endpoints only; OTLP HTTP is http://127.0.0.1:4318. Keep prompt, response, tool-content and credential capture disabled. Follow the documented capability limits; do not invent token, cost or quota data. Do not make model requests for testing. Validate configuration without consuming provider quota, then explain which new session or ordinary user activity is needed to see real telemetry.",
+    {
+      client: client.name,
+      guide: `https://github.com/ruanpato/tracequota/blob/main/${guide}`,
+    },
+  );
+  return (
+    <details className="integration-prompt">
+      <summary>{tr("Set up with your coding agent")}</summary>
+      <p>
+        {tr(
+          "Copy this prompt into the agent you want to configure. Review its local settings changes.",
+        )}
+      </p>
+      <textarea
+        aria-label={tr("Integration prompt")}
+        readOnly
+        value={prompt}
+        rows={10}
+      />
+      <button
+        type="button"
+        className="button"
+        onClick={async () => {
+          try {
+            await navigator.clipboard.writeText(prompt);
+            setCopied(true);
+            setFailed(false);
+          } catch {
+            setFailed(true);
+          }
+        }}
+      >
+        {tr("Copy prompt")}
+      </button>
+      <p role="status">
+        {failed
+          ? tr("Select and copy the prompt manually.")
+          : copied
+            ? tr("Prompt copied.")
+            : ""}
+      </p>
+    </details>
   );
 }

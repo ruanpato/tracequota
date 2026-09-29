@@ -1,14 +1,14 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2026 Ruan Pato
 
-FROM node:24.14.0-alpine AS build
+FROM node:24.21.0-alpine AS build
 WORKDIR /app
 COPY apps/web/package*.json ./
 RUN npm ci
 COPY apps/web ./
 RUN npm run build
 
-FROM nginxinc/nginx-unprivileged:1.28.0-alpine
+FROM nginxinc/nginx-unprivileged:1.31.5-alpine
 LABEL org.opencontainers.image.title="TraceQuota web" \
       org.opencontainers.image.description="Local-first observability and quota intelligence for AI coding agents" \
       org.opencontainers.image.source="https://github.com/ruanpato/tracequota" \

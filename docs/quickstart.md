@@ -35,7 +35,7 @@ docker compose run --rm tracequota-doctor
 
 Doctor checks API, Collector, Phoenix, Prometheus and Grafana; every check must print `PASS`. The Collector's distroless image has no shell probe, so doctor checks its health extension. The other main services have Compose health checks.
 
-Open [TraceQuota](http://localhost:8080), [Grafana](http://localhost:3000) and [Phoenix](http://localhost:6006). An empty dashboard is expected until telemetry arrives. Optional HTTP check:
+Open [TraceQuota](http://localhost:8080), [Grafana](http://localhost:3000) and [Phoenix](http://localhost:6006). Choose English or Brazilian Portuguese in the header. An empty dashboard is expected until telemetry arrives. Optional HTTP check:
 
 ```bash
 curl -f http://localhost:8080/health
@@ -68,7 +68,7 @@ This dated synthetic fixture omits some usage semantics, so partial/unknown pric
 
 ## 5. Connect an actual coding client
 
-Choose a [client guide](README.md#client-guides): Claude Code, Codex, OpenClaw or Gemini CLI. Point the host client's documented exporter to `http://localhost:4318` or gRPC port 4317. Some exporters require `/v1/logs`; follow the selected guide. Merge settings rather than replacing user files, keep content logging off, then restart that client. Update endpoints if ports changed.
+Choose a [client guide](README.md#client-guides): Claude Code, Codex, Cursor, OpenClaw or Gemini CLI. Cursor uses local metadata hooks instead of an OTLP exporter and has no measured token/cost/quota support. The Integrations page provides setup prompts; the [optional helper](integrations/agent-setup.md) can configure Claude Code/Codex with private backups. Point the host client's documented exporter to `http://localhost:4318` or gRPC port 4317. Some exporters require `/v1/logs`; follow the selected guide. Merge settings rather than replacing user files, keep content logging off, then restart that client. Update endpoints if ports changed.
 
 Run your normal work. TraceQuota does not log in, invoke a model or consume quota on your behalf. Select **Live data**, inspect Integrations for last-seen telemetry, and check Tasks/Grafana. Metrics-only signals cannot populate a complete request ledger or Phoenix traces. Native client/version validation is separate from synthetic tests; planned Copilot/OpenCode adapters cannot be enabled as if shipped.
 

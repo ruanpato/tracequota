@@ -46,6 +46,7 @@ CLIENTS = [
     ),
     ("opencode", "OpenCode", "plugin_otel", "experimental", "planned", "https://opencode.ai/docs/plugins/"),
     ("generic_otlp", "Generic OTLP", "tracequota_adapter", "partial", "synthetic_tested", None),
+    ("cursor", "Cursor", "tracequota_adapter", "partial", "synthetic_tested", "https://cursor.com/docs/hooks"),
 ]
 
 
@@ -56,7 +57,7 @@ def identify(attrs, name=""):
         return {"claude": "claude_code", "openai_codex": "codex", "github_copilot_cli": "copilot_cli"}.get(value, value)
     service = str(attrs.get("service.name", "")).lower().replace("-", "_")
     event = str(attrs.get("event.name", name)).lower()
-    for client in ("claude_code", "codex", "openclaw", "gemini_cli", "copilot_cli", "opencode"):
+    for client in ("claude_code", "codex", "openclaw", "gemini_cli", "copilot_cli", "opencode", "cursor"):
         if (
             service == client
             or (client == "openclaw" and service == "openclaw_gateway")
@@ -106,6 +107,8 @@ def descriptors():
             "validation": v,
             "source": s,
             "capabilities": {
+                "sessions": "supported" if i == "cursor" else "partial",
+                "tasks": "partial",
                 "model_calls": c,
                 "tokens": c,
                 "cache": "provider_dependent",
@@ -114,6 +117,20 @@ def descriptors():
                 "tools": c,
                 "quota": "unsupported" if i != "claude_code" else "partial",
                 "content_capture": "unsupported",
+                **(
+                    {
+                        "model_calls": "unsupported",
+                        "tokens": "unsupported",
+                        "cache": "unsupported",
+                        "reasoning": "unsupported",
+                        "cost": "unsupported",
+                        "quota": "unsupported",
+                        "tools": "partial",
+                        "agents": "partial",
+                    }
+                    if i == "cursor"
+                    else {}
+                ),
             },
         }
         for i, n, t, c, v, s in CLIENTS

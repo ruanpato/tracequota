@@ -25,7 +25,9 @@ def check_multi(client, api, day):
         ]:
             tasks = client.get(api + "/api/tasks?demo=true&" + query).json()
             assert tasks and all(t["client_id"] == expected for t in tasks)
-        scoped = client.get(api + "/api/overview?demo=true&client=openclaw&provider=openai").json()
+        scoped = client.get(
+            api + f"/api/overview?demo=true&client=openclaw&provider=openai&since={day}T00:00:00Z&until={day}T23:59:59Z"
+        ).json()
         assert set(scoped["costs"]["client_id"]) == {"openclaw"} and set(scoped["costs"]["provider"]) == {"openai"}
         assert Decimal(scoped["estimated_api_equivalent_cost"]) == sum(
             Decimal(e["pricing"]["total"]) for e in calls if e["provider"] == "openai"

@@ -19,3 +19,7 @@ Sources are upstream documentation; documentation support is distinct from a tes
 
 ## Pricing
 [Anthropic pricing](https://platform.claude.com/docs/en/about-claude/pricing) supplies USD token rates for the bundled catalog verified 2026-09-28, including Sonnet 4.6/5.5, Opus 4.6/5.5 and Haiku 4.5. Cache writes require a known five-minute or one-hour TTL when positive; missing TTL leaves that component partial. Unsupported Anthropic tiers/platforms/regions remain unpriced. The versioned registry also includes selected OpenAI and Google models with explicit tier/context rules. See [registry coverage](../../pricing/README.md) for current catalogs. Unknown models return null rather than zero; historical estimates remain frozen.
+
+## Cursor hooks — checked 2026-09-29
+
+[Official Cursor hooks](https://cursor.com/docs/hooks) document session, prompt-submission, stop and tool lifecycle metadata. The shipped local adapter deliberately forwards IDs, version, requested model label, generic tool category, duration and status only. Hook payloads do not provide measured token counts, API prices or subscription quota. Native execution remains untested; fixtures validate ingestion, isolation, deduplication, privacy and failure behavior. See [Cursor onboarding](../integrations/cursor.md).

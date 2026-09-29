@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased — 2026-09-29
+
+Refresh frontend, backend, image and workflow dependencies; group Dependabot updates while retaining Node 24 LTS and PostgreSQL 17 storage compatibility. Add metadata-only Cursor hooks, opt-in local Claude Code/Codex configuration with private backups, bilingual en-US/pt-BR UI, localized USD/UTC formatting, integration setup prompts, and responsive card/toolbar fixes. Native telemetry validation remains separate from synthetic tests.
+
 ## 0.2.0 — 2026-09-28
 
 Private publication readiness: Apache-2.0 copyright/NOTICE and image attribution, en-US/UTC formatting, complete Quickstart/configuration/development documentation, publication hygiene and secret scanning, corrected default API runtime target, writable test caches, and measured container acceptance. See [release readiness](docs/release-readiness.md).

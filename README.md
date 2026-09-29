@@ -8,7 +8,7 @@ Your coding clients run normally on the host. They export OpenTelemetry (OTLP) t
 
 ![TraceQuota overview with labeled synthetic data](docs/screenshots/multi-client-preview.png)
 
-All project content is English (en-US). Application dates use en-US formatting and UTC. Localization infrastructure is deliberately deferred. This initial repository is private; cloning requires access. The Apache-2.0 license is already in place for its eventual public release.
+Source code and documentation use English (en-US). The interface supports **English (US)** and **Português (Brasil)** through the header language selector, with localized dates/numbers and UTC time calculations. Monetary estimates always remain USD; switching language does not convert currency. The selection is stored in your browser. This initial repository is private; cloning requires access. The Apache-2.0 license is already in place for its eventual public release.
 
 ## Quickstart
 
@@ -42,10 +42,11 @@ See the [step-by-step Quickstart](docs/quickstart.md) for host platforms, health
 | [Codex](docs/integrations/codex.md) | Official native OTel export documented; partial normalization; native session untested |
 | [OpenClaw](docs/integrations/openclaw.md) | Official diagnostics OTel plugin documented; provider-dependent normalization; native session untested |
 | [Gemini CLI](docs/integrations/gemini-cli.md) | Official native OTel export documented; partial normalization; native session untested |
+| [Cursor](docs/integrations/cursor.md) | Local session/tool hooks; metadata adapter tested, native execution untested; no measured tokens/cost/quota |
 | [Generic OTLP](integrations/generic-otel/README.md) | HTTP JSON/protobuf and gRPC via the Collector; synthetic integration tested |
 | [GitHub Copilot CLI](docs/integrations/copilot-cli.md), [OpenCode](docs/integrations/opencode.md) | Planned experimental adapters/plugins; none shipped |
 
-Client identity is separate from provider/model identity. An OpenClaw task can use several providers. Ordinary desktop Chat/Cowork, remote SSH and cloud sessions do not automatically inherit localhost CLI support. Missing native fields remain unknown or partial. Read the client guide before enabling export, keep content logging disabled, and use **Live data** to verify genuine activity.
+Client identity is separate from provider/model identity. An OpenClaw task can use several providers. Ordinary desktop Chat/Cowork, remote SSH and cloud sessions do not automatically inherit localhost CLI support. Missing native fields remain unknown or partial. The Integrations page offers copyable agent setup prompts. An optional [local configuration helper](docs/integrations/agent-setup.md) merges Claude Code/Codex settings with private backups. Read the client guide before enabling export, keep content logging disabled, and use **Live data** to verify genuine activity.
 
 ## What is collected and where it lives
 
@@ -106,7 +107,7 @@ See [architecture](ARCHITECTURE.md), [repository map and documentation index](do
 
 Start with [CONTRIBUTING.md](CONTRIBUTING.md) and [development setup](docs/development.md). New models/rates usually require reviewed JSON catalog changes and manually calculated examples; use the [pricing contribution guide](docs/pricing/contributing.md). New clients need explicit identity, safe normalization fixtures, honest capability labels and onboarding. New providers must separate model service from billing platform and quota source. Do not copy credentials, private traces or undocumented integrations into fixtures.
 
-Tests cover privacy, usage, pricing/history, client collisions, mixed-provider accounting, quotas, migrations and full-ledger aggregation. CI checks portable backend/frontend tests, PostgreSQL, container acceptance, dependencies and image builds. Real-client authentication tests are separate from synthetic validation. See the [release-readiness report](docs/release-readiness.md) for observed results and limits; older implementation reports are historical evidence.
+Tests cover privacy, usage, pricing/history, client collisions, mixed-provider accounting, quotas, migrations and full-ledger aggregation. CI checks portable backend/frontend tests, PostgreSQL, container acceptance, dependencies and image builds. Real-client authentication tests are separate from synthetic validation. See the [dependency/UI follow-up](docs/hardening-report.md) and [initial release-readiness report](docs/release-readiness.md) for observed results and limits; older implementation reports are historical evidence.
 
 ## License and project policies
 

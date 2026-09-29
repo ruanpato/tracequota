@@ -7,8 +7,9 @@
 - Expand reviewed historical catalog coverage, additional models/providers, cloud billing platforms, regional rates and non-token charges. Existing catalogs already cover explicit cache TTL and selected processing/context tiers.
 - Improve quota capture freshness and bracketing; show capture uncertainty and overlapping tasks without causal claims.
 - Add verified Phoenix trace deep links per upstream release.
+- Validate native Cursor hooks and obtain documented measured usage support if upstream provides it.
 - Validate native Codex, Gemini CLI and OpenClaw mappings with safe real-client fixtures; implement the planned OpenCode/Copilot adapters while keeping OTLP generic.
-- Add localization or accessibility work when scoped separately; this release remains en-US without an i18n framework.
+- Expand translation coverage beyond the implemented en-US/pt-BR catalogs and improve accessibility in a separately scoped pass.
 - Optional statically distributed host companion for doctor/configuration/manual task workflows.
 - Optional instruction-change and diff-size correlation, anomaly detection and repository efficiency comparisons.
 

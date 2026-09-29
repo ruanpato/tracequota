@@ -31,3 +31,7 @@ coverage
 docs
 artifacts
 **/*.dump
+
+# Private backups from optional client configuration.
+*.tracequota-backup-*
+*.tracequota-tmp

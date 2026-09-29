@@ -1138,10 +1138,10 @@ footer {
   margin: 20px 0;
 }
 .cost-row {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 12px;
-  padding: 12px 0;
+  padding: 14px 24px;
   border-bottom: 1px solid #eef0f5;
   font-size: 13px;
 }
@@ -1150,12 +1150,15 @@ footer {
   overflow-wrap: anywhere;
 }
 .cost-row b {
+  min-width: 0;
   text-align: right;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 .cost-row small {
   display: block;
-  font-size: 10px;
+  font-size: 11px;
+  line-height: 1.5;
   color: #778092;
   font-weight: 400;
   margin-top: 4px;
@@ -1164,6 +1167,15 @@ footer {
 .cost-explanation {
   color: #697384;
   font-size: 12px;
+}
+.cost-grid > .card {
+  min-width: 0;
+}
+.cost-grid > .card > p {
+  margin: 12px 24px;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+  line-height: 1.5;
 }
 .hash {
   overflow-wrap: anywhere;
@@ -1206,5 +1218,85 @@ footer {
   }
   .cost-row {
     font-size: 12px;
+  }
+}
+
+/* Keep long translated labels and identifiers within their layout columns. */
+.card,
+.stat,
+.integration,
+.header-right,
+.page-heading > div {
+  min-width: 0;
+}
+.stat strong,
+.stat small,
+.stat label,
+.integration h2 {
+  overflow-wrap: anywhere;
+}
+.integration-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.integration-prompt {
+  margin: 18px 0;
+}
+.integration-prompt summary {
+  cursor: pointer;
+  font-weight: 600;
+  line-height: 1.6;
+}
+.integration-prompt textarea {
+  width: 100%;
+  min-width: 0;
+  resize: vertical;
+  font: inherit;
+  line-height: 1.6;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.integration-prompt .button {
+  margin-top: 10px;
+}
+header {
+  min-height: 76px;
+  height: auto;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+.header-right {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+@media (max-width: 1150px) {
+  .integration-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 850px) {
+  .integration-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 500px) {
+  .breadcrumb {
+    width: 100%;
+  }
+  .header-right {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 8px;
+  }
+  .stat-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cost-row {
+    padding: 14px 18px;
+  }
+  .integration {
+    padding: 20px;
   }
 }

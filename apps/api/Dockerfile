@@ -1,12 +1,12 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2026 Ruan Pato
 
-FROM python:3.12.11-slim-bookworm AS dependencies
+FROM python:3.14.7-slim-bookworm AS dependencies
 WORKDIR /app
 COPY apps/api/requirements.lock /tmp/requirements.lock
 RUN pip install --no-cache-dir --prefix=/install -r /tmp/requirements.lock
 
-FROM python:3.12.11-slim-bookworm AS app
+FROM python:3.14.7-slim-bookworm AS app
 LABEL org.opencontainers.image.title="TraceQuota API" \
       org.opencontainers.image.description="Local-first observability and quota intelligence for AI coding agents" \
       org.opencontainers.image.source="https://github.com/ruanpato/tracequota" \
@@ -30,6 +30,7 @@ CMD ["python", "-m", "tracequota.entrypoint"]
 FROM app AS test
 ENV PYTEST_ADDOPTS="-p no:cacheprovider" RUFF_CACHE_DIR=/tmp/tracequota-ruff-cache
 COPY tests tests
+COPY integrations integrations
 COPY infrastructure infrastructure
 COPY dashboards dashboards
 COPY docker-compose.yml .

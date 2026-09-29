@@ -7,23 +7,52 @@ updates:
     directory: /apps/web
     schedule:
       interval: weekly
+    groups:
+      frontend:
+        patterns: ['*']
+    open-pull-requests-limit: 3
   - package-ecosystem: pip
     directory: /apps/api
     schedule:
       interval: weekly
+    groups:
+      backend:
+        patterns: ['*']
+    open-pull-requests-limit: 3
   - package-ecosystem: docker
     directory: /apps/api
     schedule:
       interval: weekly
+    open-pull-requests-limit: 2
   - package-ecosystem: docker
     directory: /apps/web
     schedule:
       interval: weekly
+    groups:
+      web-images:
+        patterns: ['*']
+    ignore:
+      # Keep the current Node 24 LTS line until the next LTS is adopted.
+      - dependency-name: node
+        versions: ['>=25']
+    open-pull-requests-limit: 2
   - package-ecosystem: docker-compose
     directory: /
     schedule:
       interval: weekly
+    groups:
+      services:
+        patterns: ['*']
+    ignore:
+      # Existing PostgreSQL data needs an explicit major-version migration.
+      - dependency-name: postgres
+        versions: ['>=18']
+    open-pull-requests-limit: 2
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+    groups:
+      workflows:
+        patterns: ['*']
+    open-pull-requests-limit: 2

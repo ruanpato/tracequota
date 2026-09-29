@@ -36,3 +36,7 @@ artifacts/
 Thumbs.db
 Desktop.ini
 *.dump
+
+# Private backups from optional client configuration.
+*.tracequota-backup-*
+*.tracequota-tmp

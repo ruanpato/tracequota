@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": "python3 ./hooks/tracequota.py"
+      }
+    ],
+    "sessionEnd": [
+      {
+        "command": "python3 ./hooks/tracequota.py"
+      }
+    ],
+    "beforeSubmitPrompt": [
+      {
+        "command": "python3 ./hooks/tracequota.py"
+      }
+    ],
+    "stop": [
+      {
+        "command": "python3 ./hooks/tracequota.py"
+      }
+    ],
+    "postToolUse": [
+      {
+        "command": "python3 ./hooks/tracequota.py"
+      }
+    ],
+    "postToolUseFailure": [
+      {
+        "command": "python3 ./hooks/tracequota.py"
+      }
+    ]
+  }
+}

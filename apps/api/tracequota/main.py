@@ -25,6 +25,7 @@ from .analytics import Filters, cost_summary, usage_summary, quota_evidence
 from . import clients, pricing
 from .domain import CATEGORIES, OfficialQuotaProvider, Snapshot, quota_delta, utc
 from .telemetry import digest, normalise, sanitise_traces
+from .cursor import CursorHook, record as cursor_record
 
 
 @asynccontextmanager
@@ -569,6 +570,7 @@ def render_task(db, task, snapshots=None, filters=None):
         "quota_after": after,
         "quota_delta": quota_delta(before, after),
         "last_telemetry_at": max((e["timestamp"] for e in events), default=None),
+        "matched_event_count": sum(not filters or filters.matches(e, task) for e in events),
         "phoenix_trace_ids": task.data.get("trace_ids", []),
     }
     return result
@@ -610,7 +612,7 @@ def tasks(
         rows = [render_task(db, t, snapshots, filters) for t in db.scalars(query)]
         scoped = any(v for v in vars(filters).values())
         if scoped:
-            rows = [t for t in rows if t["llm_calls"] > 0]
+            rows = [t for t in rows if t["matched_event_count"] > 0]
     rows = [
         t
         for t in rows
@@ -911,6 +913,20 @@ def hook(payload: dict):
                 if task.data.get("kind") == "session_activity":
                     task.data = {**task.data, "completed_at": utc(), "status": "completed"}
     return {}  # Claude-compatible non-blocking response; never makes agent decisions.
+
+
+@app.post("/api/hooks/cursor")
+def cursor_hook(payload: CursorHook):
+    rec, task_id = cursor_record(payload)
+    ingest([rec])
+    if payload.hook_event_name in ("stop", "sessionEnd"):
+        with transaction() as db:
+            task = db.get(Task, task_id)
+            status = (
+                "failed" if payload.status == "error" else "aborted" if payload.status == "aborted" else "completed"
+            )
+            task.data = {**task.data, "status": status, "completed_at": rec["timestamp"]}
+    return {"continue": True} if payload.hook_event_name == "beforeSubmitPrompt" else {}
 
 
 @app.get("/metrics")

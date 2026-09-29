@@ -20,6 +20,9 @@ def test_compose_is_local_and_has_persistent_services():
         assert all(port.startswith("127.0.0.1:") for port in service.get("ports", []))
         assert "docker.sock" not in str(service)
     assert len(compose["volumes"]) == 4
+    phoenix = compose["services"]["phoenix"]["environment"]
+    assert phoenix["PHOENIX_DISABLE_AGENT_ASSISTANT"] == "true"
+    assert phoenix["PHOENIX_ENABLE_MCP_SERVER"] == "false"
 
 
 def test_privacy_allowlist_in_all_collector_pipelines():

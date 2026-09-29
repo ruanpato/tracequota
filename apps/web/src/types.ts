@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 Ruan Pato
 
+import { getLocale, t } from "./i18n";
+
 export type Tokens = {
   input: number;
   output: number;
@@ -118,9 +120,9 @@ export type Overview = {
   project_usage: Record<string, number>;
 };
 export const formatNumber = (n: number) =>
-  new Intl.NumberFormat("en-US").format(n);
+  new Intl.NumberFormat(getLocale()).format(n);
 export const formatDateTime = (value: string) =>
-  new Intl.DateTimeFormat("en-US", {
+  new Intl.DateTimeFormat(getLocale(), {
     year: "numeric",
     month: "short",
     day: "numeric",
@@ -131,32 +133,32 @@ export const formatDateTime = (value: string) =>
     timeZoneName: "short",
   }).format(new Date(value));
 export const compact = (n: number) =>
-  new Intl.NumberFormat("en-US", {
+  new Intl.NumberFormat(getLocale(), {
     notation: "compact",
     maximumFractionDigits: 1,
   }).format(n);
 export const money = (n: number | string | null | undefined) =>
   n == null
-    ? "Unknown"
-    : new Intl.NumberFormat("en-US", {
+    ? t("Unknown")
+    : new Intl.NumberFormat(getLocale(), {
         style: "currency",
         currency: "USD",
         maximumFractionDigits: 3,
       }).format(Number(n));
 export const duration = (n: number | null) =>
   n === null
-    ? "In progress"
+    ? t("In progress")
     : n < 60
       ? `${Math.round(n)}s`
       : `${Math.floor(n / 60)}m ${Math.round(n % 60)}s`;
 export function deltaLabel(d: Delta | undefined) {
   return !d
-    ? "No snapshots"
+    ? t("No snapshots")
     : d.reset_crossed
-      ? "Reset crossed"
+      ? t("Reset crossed")
       : d.delta_pp === null
-        ? "Unknown"
-        : `${d.delta_pp >= 0 ? "+" : ""}${d.delta_pp} pp`;
+        ? t("Unknown")
+        : `${d.delta_pp >= 0 ? "+" : ""}${formatNumber(d.delta_pp)} pp`;
 }
 export function matchesSearch(task: Task, search: string) {
   return [

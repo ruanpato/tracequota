@@ -1,10 +1,12 @@
 # Documentation and repository map
 
-Start with [Quickstart](quickstart.md), then [configuration/backups/updates](configuration.md) and [troubleshooting](troubleshooting/README.md). Project content is English (en-US); this release does not add an i18n framework.
+Start with [Quickstart](quickstart.md), then [configuration/backups/updates](configuration.md) and [troubleshooting](troubleshooting/README.md). Source and documentation use English (en-US); the interface supports en-US and pt-BR with lightweight translation catalogs.
 
 ## Client guides
 
 - [Claude Code CLI and Desktop Local](integrations/claude-code.md)
+- [Cursor metadata hooks](integrations/cursor.md)
+- [Set up with a coding agent](integrations/agent-setup.md)
 - [Codex](integrations/codex.md)
 - [OpenClaw](integrations/openclaw.md)
 - [Gemini CLI](integrations/gemini-cli.md)
@@ -37,7 +39,7 @@ Start with [Quickstart](quickstart.md), then [configuration/backups/updates](con
 
 ## Validation and historical evidence
 
-[Release readiness](release-readiness.md) is the current publication/installation record. [Multi-client implementation](multi-client-report.md) and [initial V1 implementation](implementation-report.md) retain dated evidence and limitations; they are historical records, not current Quickstart instructions. Curated `validation/` and `screenshots/` files use synthetic/local test data. Temporary logs, live databases, environment files, dependencies and build outputs are ignored.
+[Dependency/UI follow-up](hardening-report.md) records the latest validation. [Release readiness](release-readiness.md) retains the initial publication/installation record. [Multi-client implementation](multi-client-report.md) and [initial V1 implementation](implementation-report.md) retain dated evidence and limitations; they are historical records, not current Quickstart instructions. Curated `validation/` and `screenshots/` files use synthetic/local test data. Temporary logs, live databases, environment files, dependencies and build outputs are ignored.
 
 [Upstream capability research](research/current-capabilities.md) records documentation provenance. [Landscape research](research/landscape.md) explains design choices without claiming live integration certification.
 
