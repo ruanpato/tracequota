@@ -105,7 +105,6 @@
   "Validation:": "Validation:",
   "Telemetry received": "Telemetry received",
   "Planned": "Planned",
-  "Not configured": "Not configured",
   " · synthetic data received": " · synthetic data received",
   "Versioned pricing registry": "Versioned pricing registry",
   "Privacy comes standard.": "Privacy comes standard.",
@@ -360,5 +359,6 @@
   "Reasoning quantity unavailable for separate billing": "Reasoning quantity unavailable for separate billing",
   "Cache write TTL unavailable": "Cache write TTL unavailable",
   "Reasoning billing unsupported": "Reasoning billing unsupported",
-  "Output reasoning semantics unavailable": "Output reasoning semantics unavailable"
+  "Output reasoning semantics unavailable": "Output reasoning semantics unavailable",
+  "Awaiting telemetry": "Awaiting telemetry"
 }

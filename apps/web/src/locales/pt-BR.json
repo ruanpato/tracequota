@@ -105,7 +105,6 @@
   "Validation:": "Validação:",
   "Telemetry received": "Telemetria recebida",
   "Planned": "Planejada",
-  "Not configured": "Não configurada",
   " · synthetic data received": " · dados sintéticos recebidos",
   "Versioned pricing registry": "Registro versionado de preços",
   "Privacy comes standard.": "Privacidade por padrão.",
@@ -360,5 +359,6 @@
   "Reasoning quantity unavailable for separate billing": "Quantidade de raciocínio indisponível para cobrança separada",
   "Cache write TTL unavailable": "TTL de gravação de cache indisponível",
   "Reasoning billing unsupported": "Cobrança de raciocínio não suportada",
-  "Output reasoning semantics unavailable": "Semântica de raciocínio na saída indisponível"
+  "Output reasoning semantics unavailable": "Semântica de raciocínio na saída indisponível",
+  "Awaiting telemetry": "Aguardando telemetria"
 }

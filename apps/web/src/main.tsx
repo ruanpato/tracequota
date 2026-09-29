@@ -751,7 +751,7 @@ function App() {
                           ? tr("Telemetry received")
                           : client.validation === "planned"
                             ? tr("Planned")
-                            : tr("Not configured")}
+                            : tr("Awaiting telemetry")}
                       </Badge>
                       <p className="footnote">
                         {tr("Validation:")}{" "}
