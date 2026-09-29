@@ -86,7 +86,7 @@ services:
     # Distroless upstream image has no shell or HTTP probe executable.
     # Health extension is checked from the containerized doctor/smoke test.
   prometheus:
-    image: prom/prometheus:v3.5.0
+    image: prom/prometheus:v3.15.0
     command: [--config.file=/etc/prometheus/prometheus.yml, --storage.tsdb.path=/prometheus]
     volumes:
       - ./infrastructure/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
