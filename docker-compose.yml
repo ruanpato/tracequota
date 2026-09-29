@@ -59,7 +59,7 @@ services:
       retries: 10
     restart: unless-stopped
   phoenix:
-    image: arizephoenix/phoenix:13.15.0
+    image: arizephoenix/phoenix:20.16.0
     environment:
       PHOENIX_WORKING_DIR: /data
     volumes: [phoenix-data:/data]
