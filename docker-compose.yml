@@ -59,7 +59,7 @@ services:
       retries: 10
     restart: unless-stopped
   phoenix:
-    image: arizephoenix/phoenix:20.16.0
+    image: arizephoenix/phoenix:20.19.0
     environment:
       PHOENIX_WORKING_DIR: /data
       # TraceQuota uses Phoenix for sanitized traces, not model execution.
@@ -74,7 +74,7 @@ services:
       retries: 30
     restart: unless-stopped
   otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.161.0
+    image: otel/opentelemetry-collector-contrib:0.161.0-386
     command: [--config=/etc/otelcol-contrib/config.yaml]
     volumes: [./infrastructure/otel/collector.yml:/etc/otelcol-contrib/config.yaml:ro]
     ports:
