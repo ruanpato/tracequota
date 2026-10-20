@@ -59,7 +59,7 @@ services:
       retries: 10
     restart: unless-stopped
   phoenix:
-    image: arizephoenix/phoenix:20.16.0
+    image: arizephoenix/phoenix:20.23.0
     environment:
       PHOENIX_WORKING_DIR: /data
       # TraceQuota uses Phoenix for sanitized traces, not model execution.
@@ -74,7 +74,7 @@ services:
       retries: 30
     restart: unless-stopped
   otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.161.0
+    image: otel/opentelemetry-collector-contrib:0.163.1
     command: [--config=/etc/otelcol-contrib/config.yaml]
     volumes: [./infrastructure/otel/collector.yml:/etc/otelcol-contrib/config.yaml:ro]
     ports:
@@ -102,7 +102,7 @@ services:
       retries: 10
     restart: unless-stopped
   grafana:
-    image: grafana/grafana:13.2.3
+    image: grafana/grafana:13.2.4
     environment:
       GF_SECURITY_ADMIN_USER: local
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-tracequota-local}
