@@ -14,7 +14,7 @@ images = {
     for s in yaml.safe_load((root / "docker-compose.yml").read_text())["services"].values()
     if not s["image"].startswith("tracequota-")
 }
-images |= {"python:3.12.11-slim-bookworm", "node:24.14.0-alpine", "nginxinc/nginx-unprivileged:1.28.0-alpine"}
+images |= {"python:3.15.2-slim-bookworm", "node:24.14.0-alpine", "nginxinc/nginx-unprivileged:1.28.0-alpine"}
 with httpx.Client(timeout=40) as client:
     for image in sorted(images):
         repo, tag = image.rsplit(":", 1)

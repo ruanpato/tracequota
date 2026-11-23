@@ -65,7 +65,7 @@ Client examples are opt-in fragments to merge into existing host settings. Keep 
 
 ## Compatible dependency upgrades
 
-The application uses Node 24 LTS, Python 3.14 containers and PostgreSQL 17. Dependabot groups related changes and retains the Node LTS line and PostgreSQL major version. Keep PostgreSQL on current 17.x patch images; upgrading to 18 requires an explicit database/volume migration. Never attach an initialized 17 volume directly to a new major-version image. Back up all persisted services before upgrading Phoenix/Grafana as their schemas can change.
+The application uses Node 24 LTS, Python 3.15 containers and PostgreSQL 17. Dependabot groups related changes and retains the Node LTS line and PostgreSQL major version. Keep PostgreSQL on current 17.x patch images; upgrading to 18 requires an explicit database/volume migration. Never attach an initialized 17 volume directly to a new major-version image. Back up all persisted services before upgrading Phoenix/Grafana as their schemas can change.
 
 The interface language selector persists only in browser storage (`tracequota-locale`). It changes presentation, not ledger identifiers, pricing rules, USD amounts or UTC time boundaries. Client user settings and their private backups stay outside Git.
 
