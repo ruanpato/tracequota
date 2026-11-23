@@ -30,7 +30,7 @@ Mount commands work in Unix shells and PowerShell; the runtime must permit the c
 
 ## Optional host setup
 
-Use Python 3.12 and Node.js 24. On macOS/Linux:
+Use Python 3.15 and Node.js 24. On macOS/Linux:
 
 ```bash
 python3 -m venv .venv

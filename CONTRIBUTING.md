@@ -18,7 +18,7 @@ docker compose run --rm tracequota-doctor
 docker compose run --rm tracequota-smoke
 ```
 
-Rebuild test images after source changes. Container checks inspect image files rather than editing host sources. The development guide includes Python 3.12/Node.js 24 setup, frontend checks and full persistence acceptance. Tests use disposable databases; never configure the PostgreSQL test suite against real data.
+Rebuild test images after source changes. Container checks inspect image files rather than editing host sources. The development guide includes Python 3.15/Node.js 24 setup, frontend checks and full persistence acceptance. Tests use disposable databases; never configure the PostgreSQL test suite against real data.
 
 ## Models, providers, clients and pricing
 
