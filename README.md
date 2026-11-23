@@ -8,7 +8,7 @@ Your coding clients run normally on the host. They export OpenTelemetry (OTLP) t
 
 ![TraceQuota overview with labeled synthetic data](docs/screenshots/multi-client-preview.png)
 
-Source code and documentation use English (en-US). The interface supports **English (US)** and **Português (Brasil)** through the header language selector, with localized dates/numbers and UTC time calculations. Monetary estimates always remain USD; switching language does not convert currency. The selection is stored in your browser. This initial repository is private; cloning requires access. The Apache-2.0 license is already in place for its eventual public release.
+Source code and documentation use English (en-US). The interface supports **English (US)** and **Português (Brasil)** through the header language selector, with localized dates/numbers and UTC time calculations. Monetary estimates always remain USD; switching language does not convert currency. The selection is stored in your browser.
 
 ## Quickstart
 

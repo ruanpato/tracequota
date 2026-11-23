@@ -1,5 +1,7 @@
 # Private repository release readiness
 
+> **Note (2026-11-23).** This record was written while the repository was private, and the text below is kept as it was recorded. The repository is now public.
+
 This is the current publication/installation record for TraceQuota. Earlier implementation reports retain dated native-stack evidence and do not supersede this release check.
 
 Repository: [ruanpato/tracequota](https://github.com/ruanpato/tracequota), **private**, primary branch **main**. Description: Local-first observability, token usage, API-equivalent costs, and quota intelligence for AI coding agents.
