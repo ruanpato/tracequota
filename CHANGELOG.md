@@ -4,6 +4,8 @@
 
 Refresh frontend, backend, image and workflow dependencies; group Dependabot updates while retaining Node 24 LTS and PostgreSQL 17 storage compatibility. Add metadata-only Cursor hooks, opt-in local Claude Code/Codex configuration with private backups, bilingual en-US/pt-BR UI, localized USD/UTC formatting, integration setup prompts, and responsive card/toolbar fixes. Native telemetry validation remains separate from synthetic tests.
 
+2026-11-23: Move the API image, CI and documented host setup to Python 3.15. Refresh certifi for PYSEC-2026-4320 and move Pydantic, MarkupSafe and PyYAML to releases that publish CPython 3.15 wheels. Update Vite and Vitest to releases without the advisories reported by `npm audit`.
+
 ## 0.2.0 — 2026-09-28
 
 Private publication readiness: Apache-2.0 copyright/NOTICE and image attribution, en-US/UTC formatting, complete Quickstart/configuration/development documentation, publication hygiene and secret scanning, corrected default API runtime target, writable test caches, and measured container acceptance. See [release readiness](docs/release-readiness.md).
