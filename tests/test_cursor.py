@@ -99,6 +99,8 @@ def test_local_redirect_is_not_followed():
     class Redirect(BaseHTTPRequestHandler):
         def do_POST(self):
             calls.append(self.path)
+            # Closing with the request body unread can reset the connection before the client reads the reply.
+            self.rfile.read(int(self.headers.get("Content-Length", 0)))
             self.send_response(302)
             self.send_header("Location", "/redirected")
             self.end_headers()
